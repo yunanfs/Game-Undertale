@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - UNDERTALE</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: #000;
+            border: 8px dotted #fff;
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .login-header .heart-small {
+            width: 40px;
+            height: 40px;
+            background: #ff0000;
+            transform: rotate(45deg);
+            position: relative;
+            margin: 0 auto 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .login-header .heart-small::before,
+        .login-header .heart-small::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: #ff0000;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .login-header .heart-small::before {
+            top: -20px;
+            left: 0;
+        }
+
+        .login-header .heart-small::after {
+            left: 20px;
+            top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 4px solid #fff;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #fff;
+            color: #000;
+            border: 4px solid #fff;
+            padding: 15px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #000;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .form-links {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.7rem;
+        }
+
+        .form-links a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 2px solid #fff;
+        }
+
+        .form-links a:hover {
+            color: #ff0000;
+            border-bottom-color: #ff0000;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-link a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            padding: 10px 20px;
+            border: 3px solid #fff;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .back-link a:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 3px solid #ff0000;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 0, 0.2);
+            border: 3px solid #00ff00;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="heart-small"></div>
+                <h1>WELCOME</h1>
+                <p style="font-size: 0.8rem; color: #aaa; line-height: 2;">
+                    Please enter your credentials<br>
+                    to continue your journey
+                </p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                * Login failed!<br>
+                * Please check your credentials.
+            </div>
+
+            <div class="success-message" id="successMessage">
+                * Login successful!<br>
+                * Redirecting to game...
+            </div>
+
+            <form id="loginForm" action="php/login.php" method="POST">
+                <div class="form-group">
+                    <label for="username">★ USERNAME</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">★ PASSWORD</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter password">
+                </div>
+
+                <button type="submit" class="submit-btn">★ LOGIN</button>
+
+                <div class="form-links">
+                    <p>Don't have an account? <a href="register.html">Register here</a></p>
+                    <p style="margin-top: 10px;"><a href="forgot-password.html">Forgot password?</a></p>
+                </div>
+
+                <div class="back-link">
+                    <a href="index.html">← BACK TO HOME</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Send AJAX request
+            fetch('php/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('successMessage').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                document.getElementById('errorMessage').style.display = 'block';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNDERTALE - The RPG Game</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero" id="hero">
+        <div class="dotted-border">
+            <div class="heart"></div>
+            <h1 class="title">UNDERTALE</h1>
+            <p class="subtitle">
+                The RPG game where you<br>
+                don't have to destroy anyone.
+            </p>
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="scrollToSection('battle')">★ START GAME</button>
+                <button class="menu-btn" onclick="scrollToSection('story')">★ STORY</button>
+                <button class="menu-btn" onclick="scrollToSection('characters')">★ CHARACTERS</button>
+                <button class="menu-btn" onclick="scrollToSection('music')">★ MUSIC</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#hero">HOME</a>
+        <a href="#battle">BATTLE</a>
+        <a href="#story">STORY</a>
+        <a href="#characters">CHARACTERS</a>
+        <a href="#tips">TIPS</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#music">MUSIC</a>
+        <a href="login.html" class="login-btn">LOGIN</a>
+    </nav>
+
+    <!-- Battle Game Section -->
+    <section id="battle">
+        <div class="container">
+            <h2>★ BATTLE SYSTEM ★</h2>
+            <div class="battle-container">
+                <div class="battle-header">
+                    <div class="player-info">
+                        <div class="player-name">FRISK</div>
+                        <div class="player-lv">LV 1</div>
+                    </div>
+                    <div class="hp-section">
+                        <div class="hp-label">HP</div>
+                        <div class="hp-text" id="hpText">20 / 20</div>
+                        <div class="hp-bar-container">
+                            <div class="hp-bar" id="playerHp"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battle-arena" id="battleArena">
+                    <div class="enemy-sprite" id="enemySprite">
+                        <div class="enemy-name">FROGGIT</div>
+                        <div class="enemy-icon">🐸</div>
+                    </div>
+                    <div class="player-soul" id="playerSoul"></div>
+                </div>
+
+                <div class="battle-text-box" id="battleTextBox">
+                    <div class="battle-text" id="battleText">
+                        * A wild FROGGIT appeared!<br>
+                        * It doesn't seem to know why it's here.
+                    </div>
+                </div>
+
+                <div class="battle-buttons" id="battleButtons">
+                    <button class="battle-btn fight-btn" onclick="handleFight()">
+                        <span class="btn-icon">★</span> FIGHT
+                    </button>
+                    <button class="battle-btn act-btn" onclick="handleAct()">
+                        <span class="btn-icon">★</span> ACT
+                    </button>
+                    <button class="battle-btn item-btn" onclick="handleItem()">
+                        <span class="btn-icon">★</span> ITEM
+                    </button>
+                    <button class="battle-btn mercy-btn" onclick="handleMercy()">
+                        <span class="btn-icon">★</span> MERCY
+                    </button>
+                </div>
+
+                <div class="battle-stats">
+                    <div class="stat-item">
+                        <span>TURNS:</span>
+                        <span id="turnCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>DAMAGE:</span>
+                        <span id="totalDamage">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>SCORE:</span>
+                        <span id="score">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="victory-screen" id="victory">
+                <h2>★ VICTORY! ★</h2>
+                <p class="victory-text">
+                    * You won the battle!<br>
+                    * You earned 0 EXP and 0 gold.<br>
+                    * Your LOVE increased!
+                </p>
+                <div class="victory-stats">
+                    <div>Turns Used: <span id="finalTurns">0</span></div>
+                    <div>Total Damage: <span id="finalDamage">0</span></div>
+                    <div>Final Score: <span id="finalScore">0</span></div>
+                </div>
+                <button class="menu-btn" onclick="resetBattle()">CONTINUE</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story">
+        <div class="container">
+            <h2>★ THE STORY ★</h2>
+            <div class="story-timeline">
+                <div class="story-item">
+                    <h3 class="story-title">THE LEGEND</h3>
+                    <p class="story-text">
+                        Long ago, two races ruled over Earth: HUMANS and MONSTERS.
+                        One day, war broke out between the two races.
+                        After a long battle, the humans were victorious.
+                        They sealed the monsters underground with a magic spell.
+                    </p>
+                </div>
+
+                <div class="story-item">
+                    <h3 class="story-title">MT. EBOTT - 201X</h3>
+                    <p class="story-text">
+                        Legends say that those who climb the mountain never return.
+                        A child falls into the Underground, the land where monsters have been banished.
+                        This is where your journey begins.
+                    </p>
+                </div>
+
+                <div class="story-item">
+                    <h3 class="story-title">THE BARRIER</h3>
+                    <p class="story-text">
+                        The monsters are trapped behind a magical barrier.
+                        It takes the SOUL of a human and the SOUL of a monster to cross it.
+                        But there is no way for a monster to leave without taking a human SOUL.
+                    </p>
+                </div>
+
+                <div class="story-item">
+                    <h3 class="story-title">YOUR CHOICES MATTER</h3>
+                    <p class="story-text">
+                        In this world, you can choose to FIGHT or show MERCY.
+                        Every monster has their own personality and story.
+                        Your actions will determine not just your fate, but theirs too.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section id="characters">
+        <div class="container">
+            <h2>★ CHARACTERS ★</h2>
+            <div class="characters-grid">
+                <div class="character-card" onclick="showCharacterModal('frisk')">
+                    <div class="character-img">👤</div>
+                    <h3 class="character-name">FRISK</h3>
+                    <p class="character-desc">The protagonist. A human child who falls into the Underground.</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>20</span></div>
+                        <div class="stat"><span>AT:</span><span>10</span></div>
+                        <div class="stat"><span>DF:</span><span>10</span></div>
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="showCharacterModal('sans')">
+                    <div class="character-img">💀</div>
+                    <h3 class="character-name">SANS</h3>
+                    <p class="character-desc">A lazy skeleton who loves puns and ketchup.</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>1</span></div>
+                        <div class="stat"><span>AT:</span><span>1</span></div>
+                        <div class="stat"><span>DF:</span><span>1</span></div>
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="showCharacterModal('papyrus')">
+                    <div class="character-img">🦴</div>
+                    <h3 class="character-name">PAPYRUS</h3>
+                    <p class="character-desc">Sans's enthusiastic brother. Dreams of joining the Royal Guard!</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>680</span></div>
+                        <div class="stat"><span>AT:</span><span>20</span></div>
+                        <div class="stat"><span>DF:</span><span>20</span></div>
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="showCharacterModal('toriel')">
+                    <div class="character-img">👑</div>
+                    <h3 class="character-name">TORIEL</h3>
+                    <p class="character-desc">The caretaker of the Ruins. Protects humans who fall down.</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>440</span></div>
+                        <div class="stat"><span>AT:</span><span>80</span></div>
+                        <div class="stat"><span>DF:</span><span>80</span></div>
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="showCharacterModal('undyne')">
+                    <div class="character-img">🐟</div>
+                    <h3 class="character-name">UNDYNE</h3>
+                    <p class="character-desc">Head of the Royal Guard. Passionate about justice!</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>1500</span></div>
+                        <div class="stat"><span>AT:</span><span>50</span></div>
+                        <div class="stat"><span>DF:</span><span>20</span></div>
+                    </div>
+                </div>
+
+                <div class="character-card" onclick="showCharacterModal('flowey')">
+                    <div class="character-img">🌻</div>
+                    <h3 class="character-name">FLOWEY</h3>
+                    <p class="character-desc">A friendly flower... or is he?</p>
+                    <div class="character-stats">
+                        <div class="stat"><span>HP:</span><span>???</span></div>
+                        <div class="stat"><span>AT:</span><span>???</span></div>
+                        <div class="stat"><span>DF:</span><span>???</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section id="tips">
+        <div class="container">
+            <h2>★ TIPS & TRICKS ★</h2>
+            <div class="tips-container">
+                <div class="tip-box">
+                    <h3 class="tip-title">BATTLE MECHANICS</h3>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Use WASD or Arrow Keys to move your SOUL</li>
+                            <li>Avoid white bullets during enemy attacks</li>
+                            <li>Blue attacks: Stand still to avoid damage</li>
+                            <li>Orange attacks: Keep moving to avoid damage</li>
+                            <li>Perfect timing on FIGHT increases damage</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <h3 class="tip-title">PACIFIST ROUTE</h3>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Never kill any monsters (0 EXP)</li>
+                            <li>Spare every enemy you encounter</li>
+                            <li>Complete all friendship quests</li>
+                            <li>Get the best ending!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <h3 class="tip-title">SECRETS</h3>
+                    <div class="tip-content">
+                        <ul>
+                            <li>Call Toriel from different rooms</li>
+                            <li>Play piano in Waterfall correctly</li>
+                            <li>Find the Mystery Man (Gaster)</li>
+                            <li>Pet the Annoying Dog</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2>★ GALLERY ★</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><div class="gallery-img">🏛️</div><h3>THE RUINS</h3></div>
+                <div class="gallery-item"><div class="gallery-img">❄️</div><h3>SNOWDIN</h3></div>
+                <div class="gallery-item"><div class="gallery-img">💧</div><h3>WATERFALL</h3></div>
+                <div class="gallery-item"><div class="gallery-img">🔥</div><h3>HOTLAND</h3></div>
+                <div class="gallery-item"><div class="gallery-img">🏰</div><h3>NEW HOME</h3></div>
+                <div class="gallery-item"><div class="gallery-img">⚔️</div><h3>BATTLE</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Section -->
+    <section id="music">
+        <div class="container">
+            <h2>★ SOUNDTRACK ★</h2>
+            <div class="music-player">
+                <div class="now-playing">
+                    <div>NOW PLAYING:</div>
+                    <div class="track-name" id="currentTrack">Once Upon a Time</div>
+                </div>
+                <div class="player-controls">
+                    <button class="control-btn" onclick="previousTrack()">◀</button>
+                    <button class="control-btn" id="playBtn" onclick="togglePlay()">▶</button>
+                    <button class="control-btn" onclick="nextTrack()">▶▶</button>
+                </div>
+                <div class="playlist">
+                    <div class="track active" onclick="selectTrack(0)">01. Once Upon a Time</div>
+                    <div class="track" onclick="selectTrack(1)">02. Your Best Friend</div>
+                    <div class="track" onclick="selectTrack(2)">03. Fallen Down</div>
+                    <div class="track" onclick="selectTrack(3)">04. Megalovania</div>
+                    <div class="track" onclick="selectTrack(4)">05. Death by Glamour</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Character Modal -->
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">X</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="game-over" id="gameOver">
+        <h1>YOU DIED</h1>
+        <button class="menu-btn" onclick="resetBattle()">CONTINUE</button>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
