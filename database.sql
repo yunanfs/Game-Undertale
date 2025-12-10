@@ -3,8 +3,14 @@ CREATE DATABASE IF NOT EXISTS undertale_game CHARACTER SET utf8mb4 COLLATE utf8m
 
 USE undertale_game;
 
+-- Drop existing tables if they exist (untuk fresh install)
+DROP TABLE IF EXISTS characters_unlocked;
+DROP TABLE IF EXISTS game_scores;
+DROP TABLE IF EXISTS user_progress;
+DROP TABLE IF EXISTS users;
+
 -- Users table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -17,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Game scores table
-CREATE TABLE IF NOT EXISTS game_scores (
+CREATE TABLE game_scores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     score INT NOT NULL DEFAULT 0,
@@ -32,7 +38,7 @@ CREATE TABLE IF NOT EXISTS game_scores (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User progress table
-CREATE TABLE IF NOT EXISTS user_progress (
+CREATE TABLE user_progress (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL UNIQUE,
     level INT DEFAULT 1,
@@ -49,7 +55,7 @@ CREATE TABLE IF NOT EXISTS user_progress (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Characters unlocked table
-CREATE TABLE IF NOT EXISTS characters_unlocked (
+CREATE TABLE characters_unlocked (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     character_name VARCHAR(50) NOT NULL,
@@ -58,20 +64,22 @@ CREATE TABLE IF NOT EXISTS characters_unlocked (
     UNIQUE KEY unique_user_character (user_id, character_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert demo user (password: undertale123)
+-- Insert demo users dengan password yang sudah di-hash
+-- Password untuk semua user: undertale123
 INSERT INTO users (username, email, password) VALUES 
-('player1', 'player1@undertale.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
-('frisk', 'frisk@underground.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi')
-ON DUPLICATE KEY UPDATE username=username;
+('player1', 'player1@undertale.com', '$2y$10$YourHashedPasswordHere1234567890123456789012345678901234'),
+('frisk', 'frisk@underground.com', '$2y$10$YourHashedPasswordHere1234567890123456789012345678901234'),
+('sans', 'sans@snowdin.com', '$2y$10$YourHashedPasswordHere1234567890123456789012345678901234');
 
--- Insert demo progress
+-- IMPORTANT: Jalankan script ini di PHP untuk generate password hash yang benar:
+-- <?php echo password_hash('undertale123', PASSWORD_DEFAULT); ?>
+
+-- Insert demo progress untuk user pertama
 INSERT INTO user_progress (user_id, level, exp, gold, battles_won) 
-SELECT id, 1, 0, 0, 0 FROM users WHERE username = 'player1'
-ON DUPLICATE KEY UPDATE user_id=user_id;
+VALUES (1, 1, 0, 0, 0);
 
--- Sample game scores
+-- Insert sample game scores
 INSERT INTO game_scores (user_id, score, turns_used, damage_dealt, hp_remaining, route_type)
-SELECT id, 1000, 5, 50, 15, 'pacifist' FROM users WHERE username = 'player1';
-
-INSERT INTO game_scores (user_id, score, turns_used, damage_dealt, hp_remaining, route_type)
-SELECT id, 1500, 8, 80, 12, 'neutral' FROM users WHERE username = 'player1';
+VALUES 
+(1, 1000, 5, 50, 15, 'pacifist'),
+(1, 1500, 8, 80, 12, 'neutral');

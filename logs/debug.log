@@ -1,0 +1,141 @@
+[2025-12-10 17:24:02] Login attempt for username: player1
+[2025-12-10 17:24:02] Database connected successfully
+[2025-12-10 17:24:02] Query executed. Rows found: 1
+[2025-12-10 17:24:02] User found: player1
+[2025-12-10 17:24:02] Stored password hash: $2y$10$92IXUNpkjO0rO...
+[2025-12-10 17:24:02] Password verification: FAILED
+[2025-12-10 17:24:02] Invalid password for user: player1
+[2025-12-10 17:24:58] Login attempt for username: player1
+[2025-12-10 17:24:58] Database connected successfully
+[2025-12-10 17:24:58] Query executed. Rows found: 1
+[2025-12-10 17:24:58] User found: player1
+[2025-12-10 17:24:58] Stored password hash: $2y$10$92IXUNpkjO0rO...
+[2025-12-10 17:24:58] Password verification: FAILED
+[2025-12-10 17:24:58] Invalid password for user: player1
+[2025-12-10 17:36:56] Login attempt for username: player1
+[2025-12-10 17:36:56] Database connected successfully
+[2025-12-10 17:36:56] Query executed. Rows found: 1
+[2025-12-10 17:36:56] User found: player1
+[2025-12-10 17:36:56] Stored password hash: $2y$10$92IXUNpkjO0rO...
+[2025-12-10 17:36:56] Password verification: FAILED
+[2025-12-10 17:36:56] Invalid password for user: player1
+[2025-12-10 17:42:22] Login attempt for username: player1
+[2025-12-10 17:42:22] Database connected successfully
+[2025-12-10 17:42:22] Query executed. Rows found: 1
+[2025-12-10 17:42:22] User found: player1
+[2025-12-10 17:42:22] Password verification: FAILED
+[2025-12-10 17:42:22] Invalid password for user: player1
+[2025-12-10 17:43:05] Login attempt for username: player1
+[2025-12-10 17:43:05] Database connected successfully
+[2025-12-10 17:43:05] Query executed. Rows found: 1
+[2025-12-10 17:43:05] User found: player1
+[2025-12-10 17:43:05] Password verification: FAILED
+[2025-12-10 17:43:05] Invalid password for user: player1
+[2025-12-10 17:44:12] Login attempt for username: sans
+[2025-12-10 17:44:12] Database connected successfully
+[2025-12-10 17:44:12] Query executed. Rows found: 1
+[2025-12-10 17:44:12] User found: sans
+[2025-12-10 17:44:12] Password verification: SUCCESS
+[2025-12-10 17:44:12] Session created for user: sans
+[2025-12-10 17:46:15] Login attempt for username: sans
+[2025-12-10 17:46:15] Database connected successfully
+[2025-12-10 17:46:15] Query executed. Rows found: 1
+[2025-12-10 17:46:15] User found: sans
+[2025-12-10 17:46:15] Password verification: SUCCESS
+[2025-12-10 17:46:15] Session created for user: sans
+[2025-12-10 17:47:14] Login attempt for username: sans
+[2025-12-10 17:47:14] Database connected successfully
+[2025-12-10 17:47:14] Query executed. Rows found: 1
+[2025-12-10 17:47:14] User found: sans
+[2025-12-10 17:47:14] Password verification: SUCCESS
+[2025-12-10 17:47:14] Session created for user: sans
+[2025-12-10 17:47:24] Login attempt for username: sans
+[2025-12-10 17:47:24] Database connected successfully
+[2025-12-10 17:47:24] Query executed. Rows found: 1
+[2025-12-10 17:47:24] User found: sans
+[2025-12-10 17:47:24] Password verification: SUCCESS
+[2025-12-10 17:47:24] Session created for user: sans
+[2025-12-10 17:47:40] Login attempt for username: sans
+[2025-12-10 17:47:40] Database connected successfully
+[2025-12-10 17:47:40] Query executed. Rows found: 1
+[2025-12-10 17:47:40] User found: sans
+[2025-12-10 17:47:41] Password verification: SUCCESS
+[2025-12-10 17:47:41] Session created for user: sans
+[2025-12-10 17:48:11] Login attempt for username: sans
+[2025-12-10 17:48:11] Database connected successfully
+[2025-12-10 17:48:11] Query executed. Rows found: 1
+[2025-12-10 17:48:11] User found: sans
+[2025-12-10 17:48:11] Password verification: SUCCESS
+[2025-12-10 17:48:11] Session created for user: sans
+[2025-12-10 17:54:14] Login attempt for username: sans
+[2025-12-10 17:54:14] Database connected successfully
+[2025-12-10 17:54:14] Query executed. Rows found: 1
+[2025-12-10 17:54:14] User found: sans
+[2025-12-10 17:54:14] Password verification: SUCCESS
+[2025-12-10 17:54:14] Session created for user: sans
+[2025-12-10 17:55:11] Login attempt for username: sans
+[2025-12-10 17:55:11] Database connected successfully
+[2025-12-10 17:55:11] Query executed. Rows found: 1
+[2025-12-10 17:55:11] User found: sans
+[2025-12-10 17:55:11] Password verification: SUCCESS
+[2025-12-10 17:55:11] Session created for user: sans
+[2025-12-10 18:00:48] Login attempt for username: sans
+[2025-12-10 18:00:48] Database connected successfully
+[2025-12-10 18:00:48] Query executed. Rows found: 1
+[2025-12-10 18:00:48] User found: sans
+[2025-12-10 18:00:48] Password verification: SUCCESS
+[2025-12-10 18:00:48] Session created for user: sans
+[2025-12-10 18:10:51] Login attempt for username: sans
+[2025-12-10 18:10:51] Database connected successfully
+[2025-12-10 18:10:51] Query executed. Rows found: 1
+[2025-12-10 18:10:51] User found: sans
+[2025-12-10 18:10:51] Password verification: SUCCESS
+[2025-12-10 18:10:51] Session created for user: sans
+[2025-12-10 18:11:03] Login attempt for username: sans
+[2025-12-10 18:11:03] Database connected successfully
+[2025-12-10 18:11:03] Query executed. Rows found: 1
+[2025-12-10 18:11:03] User found: sans
+[2025-12-10 18:11:03] Password verification: SUCCESS
+[2025-12-10 18:11:03] Session created for user: sans
+[2025-12-10 18:12:10] Login attempt for username: sans
+[2025-12-10 18:12:10] Database connected successfully
+[2025-12-10 18:12:10] Query executed. Rows found: 1
+[2025-12-10 18:12:10] User found: sans
+[2025-12-10 18:12:10] Password verification: SUCCESS
+[2025-12-10 18:12:10] Session created for user: sans
+[2025-12-10 18:30:09] Login attempt for username: admin
+[2025-12-10 18:30:09] Database connected successfully
+[2025-12-10 18:30:09] Query executed. Rows found: 0
+[2025-12-10 18:30:09] User not found: admin
+[2025-12-10 18:33:08] Login attempt for username: admin
+[2025-12-10 18:33:08] Database connected successfully
+[2025-12-10 18:33:08] Query executed. Rows found: 0
+[2025-12-10 18:33:08] User not found: admin
+[2025-12-10 18:33:34] Login attempt for username: admin
+[2025-12-10 18:33:34] Database connected successfully
+[2025-12-10 18:33:34] Query executed. Rows found: 0
+[2025-12-10 18:33:34] User not found: admin
+[2025-12-10 18:36:58] Login attempt for username: admin
+[2025-12-10 18:36:58] Database connected successfully
+[2025-12-10 18:36:58] Query executed. Rows found: 0
+[2025-12-10 18:36:58] User not found: admin
+[2025-12-10 18:37:47] Login attempt for username: admin
+[2025-12-10 18:37:47] Database connected successfully
+[2025-12-10 18:37:47] Query executed. Rows found: 0
+[2025-12-10 18:37:47] User not found: admin
+[2025-12-10 18:41:53] Login attempt for username: sans
+[2025-12-10 18:41:53] Database connected successfully
+[2025-12-10 18:41:53] Query executed. Rows found: 1
+[2025-12-10 18:41:53] User found: sans
+[2025-12-10 18:41:53] Password verification: SUCCESS
+[2025-12-10 18:41:53] Session created for user: sans
+[2025-12-10 18:45:17] Login attempt for username: admin
+[2025-12-10 18:45:17] Database connected successfully
+[2025-12-10 18:45:17] Query executed. Rows found: 0
+[2025-12-10 18:45:17] User not found: admin
+[2025-12-10 18:45:23] Login attempt for username: sans
+[2025-12-10 18:45:23] Database connected successfully
+[2025-12-10 18:45:23] Query executed. Rows found: 1
+[2025-12-10 18:45:23] User found: sans
+[2025-12-10 18:45:23] Password verification: SUCCESS
+[2025-12-10 18:45:23] Session created for user: sans
