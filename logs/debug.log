@@ -161,3 +161,41 @@
 [2025-12-11 07:21:26] User found: sans
 [2025-12-11 07:21:27] Password verification: SUCCESS
 [2025-12-11 07:21:27] Session created for user: sans
+[2025-12-11 07:36:32] Login attempt for username: admin
+[2025-12-11 07:36:32] Database connected successfully
+[2025-12-11 07:36:32] Checking admin table...
+[2025-12-11 07:36:32] Admin found: admin
+[2025-12-11 07:36:32] Admin session created for: admin
+[2025-12-11 07:36:49] Login attempt for username: admin
+[2025-12-11 07:36:49] Database connected successfully
+[2025-12-11 07:36:49] Checking admin table...
+[2025-12-11 07:36:49] Admin found: admin
+[2025-12-11 07:36:49] Admin session created for: admin
+[2025-12-11 07:37:09] Login attempt for username: admin
+[2025-12-11 07:37:09] Database connected successfully
+[2025-12-11 07:37:09] Checking admin table...
+[2025-12-11 07:37:09] Admin found: admin
+[2025-12-11 07:37:09] Admin session created for: admin
+[2025-12-11 07:37:21] Login attempt for username: admin
+[2025-12-11 07:37:21] Database connected successfully
+[2025-12-11 07:37:21] Checking admin table...
+[2025-12-11 07:37:21] Admin found: admin
+[2025-12-11 07:37:21] Admin session created for: admin
+[2025-12-11 07:43:01] Login attempt for username: admin
+[2025-12-11 07:43:01] Database connected successfully
+[2025-12-11 07:43:01] Checking admin table...
+[2025-12-11 07:43:01] Admin found: admin
+[2025-12-11 07:43:01] Admin session created for: admin
+[2025-12-11 07:43:07] Login attempt for username: admin
+[2025-12-11 07:43:07] Database connected successfully
+[2025-12-11 07:43:07] Checking admin table...
+[2025-12-11 07:43:07] Admin found: admin
+[2025-12-11 07:43:08] Admin session created for: admin
+[2025-12-11 07:43:22] Login attempt for username: sans
+[2025-12-11 07:43:22] Database connected successfully
+[2025-12-11 07:43:22] Checking admin table...
+[2025-12-11 07:43:22] Checking users table...
+[2025-12-11 07:43:22] Query executed. Rows found: 1
+[2025-12-11 07:43:22] User found: sans
+[2025-12-11 07:43:22] Password verification: SUCCESS
+[2025-12-11 07:43:22] Session created for user: sans

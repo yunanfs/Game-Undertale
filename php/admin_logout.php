@@ -7,6 +7,6 @@ $_SESSION['admin_id'] = null;
 $_SESSION['admin_username'] = null;
 session_destroy();
 
-// Redirect to admin login
-header('Location: admin_login.php');
+// Redirect to unified login
+header('Location: login.php');
 exit;

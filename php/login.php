@@ -54,7 +54,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->set_charset("utf8mb4");
         logDebug("Database connected successfully");
         
-        // Prepare SQL statement
+        // ===== STEP 1: Check if username is admin =====
+        logDebug("Checking admin table...");
+        $admin_stmt = $conn->prepare("SELECT id, username, password FROM admins WHERE username = ? AND is_active = 1");
+        
+        if (!$admin_stmt) {
+            logDebug("Prepare failed: " . $conn->error);
+            throw new Exception("Prepare failed: " . $conn->error);
+        }
+        
+        $admin_stmt->bind_param("s", $username);
+        $admin_stmt->execute();
+        $admin_result = $admin_stmt->get_result();
+        
+        // Check if admin found
+        if ($admin_result->num_rows === 1) {
+            $admin = $admin_result->fetch_assoc();
+            logDebug("Admin found: " . $admin['username']);
+            
+            // Verify admin password
+            if (password_verify($password, $admin['password'])) {
+                // Admin login successful
+                $_SESSION['admin_logged_in'] = true;
+                $_SESSION['admin_id'] = $admin['id'];
+                $_SESSION['admin_username'] = $admin['username'];
+                
+                logDebug("Admin session created for: " . $admin['username']);
+                
+                // Update last login
+                $updateStmt = $conn->prepare("UPDATE admins SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
+                if ($updateStmt) {
+                    $updateStmt->bind_param("i", $admin['id']);
+                    $updateStmt->execute();
+                    $updateStmt->close();
+                }
+                
+                $admin_stmt->close();
+                $conn->close();
+                
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Admin login successful',
+                    'type' => 'admin',
+                    'user' => [
+                        'id' => $admin['id'],
+                        'username' => $admin['username']
+                    ]
+                ]);
+                exit;
+            } else {
+                logDebug("Admin password verification FAILED");
+                $admin_stmt->close();
+                $conn->close();
+                
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid username or password'
+                ]);
+                exit;
+            }
+        }
+        
+        $admin_stmt->close();
+        
+        // ===== STEP 2: Check if username is regular user =====
+        logDebug("Checking users table...");
         $stmt = $conn->prepare("SELECT id, username, password, email FROM users WHERE username = ?");
         
         if (!$stmt) {
@@ -77,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logDebug("Password verification: " . ($passwordVerified ? "SUCCESS" : "FAILED"));
             
             if ($passwordVerified) {
-                // Login successful
+                // User login successful
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['logged_in'] = true;
@@ -92,14 +156,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $updateStmt->close();
                 }
                 
+                $stmt->close();
+                $conn->close();
+                
                 echo json_encode([
                     'success' => true,
                     'message' => 'Login successful',
+                    'type' => 'user',
                     'user' => [
                         'id' => $user['id'],
                         'username' => $user['username']
                     ]
                 ]);
+                exit;
             } else {
                 // Invalid password
                 logDebug("Invalid password for user: " . $username);
@@ -342,8 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="error-message" id="errorMessage">
-                * Login failed!<br>
-                * Please check your credentials.
+                <span id="errorText">* Login failed!<br>* Please check your credentials.</span>
             </div>
 
             <div class="success-message" id="successMessage">
@@ -396,16 +464,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (data.success) {
                     document.getElementById('successMessage').style.display = 'block';
                     document.getElementById('errorMessage').style.display = 'none';
+                    
+                    // Determine redirect based on login type
+                    let redirectUrl = '../index.php';
+                    if (data.type === 'admin') {
+                        redirectUrl = '../admin/dashboard.php';
+                    }
+                    
                     setTimeout(() => {
-                        window.location.href = '../index.php';
+                        window.location.href = redirectUrl;
                     }, 1500);
                 } else {
+                    // Update error message
+                    const errorText = document.getElementById('errorText');
+                    if (errorText) {
+                        errorText.innerHTML = '* ' + (data.message || 'Login failed') + '<br>* Please try again.';
+                    } else {
+                        document.getElementById('errorMessage').textContent = data.message || 'Login failed';
+                    }
                     document.getElementById('errorMessage').style.display = 'block';
                     document.getElementById('successMessage').style.display = 'none';
                 }
             })
             .catch(error => {
                 document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorText').innerHTML = '* Connection error<br>* Please try again.';
                 console.error('Error:', error);
             });
         });
