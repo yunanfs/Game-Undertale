@@ -479,7 +479,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             <div class="battle-container">
                 <div class="battle-header">
                     <div class="player-info">
-                        <div class="player-name">FRISK</div>
+                        <div class="player-name" id="playerName"><?php echo strtoupper($username ?: 'FRISK'); ?></div>
                         <div class="player-lv">LV 1</div>
                     </div>
                     <div class="hp-section">
@@ -766,6 +766,19 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="modal" id="logoutModal">
+        <div class="modal-content logout-modal">
+            <div class="logout-icon">❤</div>
+            <h2>Are you sure?</h2>
+            <p>Do you really want to<br>leave?</p>
+            <div class="logout-buttons">
+                <button class="logout-btn confirm" onclick="confirmLogout()">★ YES ★</button>
+                <button class="logout-btn cancel" onclick="closeModal('logoutModal')">★ NO ★</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Game Over Screen -->
     <div class="game-over" id="gameOver">
         <h1>YOU DIED</h1>
@@ -965,12 +978,15 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
 
         // Logout
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                fetch('api/logout.php')
-                    .then(() => {
-                        window.location.href = 'index.php';
-                    });
-            }
+            openModal('logoutModal');
+        }
+
+        // Confirm logout
+        function confirmLogout() {
+            fetch('api/logout.php')
+                .then(() => {
+                    window.location.href = 'index.php';
+                });
         }
     </script>
 </body>

@@ -7,6 +7,16 @@ ini_set('error_log', __DIR__ . '/../logs/php_errors.log');
 
 session_start();
 
+// Redirect if already logged in
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    header('Location: ../index.php');
+    exit;
+}
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    header('Location: ../admin/dashboard.php');
+    exit;
+}
+
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
@@ -22,21 +32,49 @@ function logDebug($message) {
     error_log(date('[Y-m-d H:i:s] ') . $message . "\n", 3, $logDir . '/debug.log');
 }
 
-// ========== HANDLE AJAX LOGIN REQUEST ==========
+// ========== HANDLE AJAX REGISTER REQUEST ==========
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $confirmPassword = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
     
-    logDebug("Login attempt for username: " . $username);
+    logDebug("Register attempt for username: " . $username);
     
-    // Validate input
-    if (empty($username) || empty($password)) {
-        logDebug("Empty username or password");
+    // Validation
+    $errors = [];
+    
+    if (empty($username)) {
+        $errors[] = 'Username is required';
+    } elseif (strlen($username) < 3) {
+        $errors[] = 'Username must be at least 3 characters';
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+        $errors[] = 'Username can only contain letters, numbers, and underscores';
+    }
+    
+    if (empty($email)) {
+        $errors[] = 'Email is required';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Invalid email format';
+    }
+    
+    if (empty($password)) {
+        $errors[] = 'Password is required';
+    } elseif (strlen($password) < 6) {
+        $errors[] = 'Password must be at least 6 characters';
+    }
+    
+    if ($password !== $confirmPassword) {
+        $errors[] = 'Passwords do not match';
+    }
+    
+    if (!empty($errors)) {
+        logDebug("Validation errors: " . implode(', ', $errors));
         echo json_encode([
             'success' => false,
-            'message' => 'Username and password are required'
+            'message' => implode(', ', $errors)
         ]);
         exit;
     }
@@ -45,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Create database connection
         $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         
-        // Check connection
         if ($conn->connect_error) {
             logDebug("Connection failed: " . $conn->connect_error);
             throw new Exception("Connection failed: " . $conn->connect_error);
@@ -54,136 +91,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->set_charset("utf8mb4");
         logDebug("Database connected successfully");
         
-        // ===== STEP 1: Check if username is admin =====
-        logDebug("Checking admin table...");
-        $admin_stmt = $conn->prepare("SELECT id, username, password FROM admins WHERE username = ? AND is_active = 1");
-        
-        if (!$admin_stmt) {
-            logDebug("Prepare failed: " . $conn->error);
-            throw new Exception("Prepare failed: " . $conn->error);
-        }
-        
-        $admin_stmt->bind_param("s", $username);
-        $admin_stmt->execute();
-        $admin_result = $admin_stmt->get_result();
-        
-        // Check if admin found
-        if ($admin_result->num_rows === 1) {
-            $admin = $admin_result->fetch_assoc();
-            logDebug("Admin found: " . $admin['username']);
-            
-            // Verify admin password
-            if (password_verify($password, $admin['password'])) {
-                // Admin login successful
-                $_SESSION['admin_logged_in'] = true;
-                $_SESSION['admin_id'] = $admin['id'];
-                $_SESSION['admin_username'] = $admin['username'];
-                
-                logDebug("Admin session created for: " . $admin['username']);
-                
-                // Update last login
-                $updateStmt = $conn->prepare("UPDATE admins SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
-                if ($updateStmt) {
-                    $updateStmt->bind_param("i", $admin['id']);
-                    $updateStmt->execute();
-                    $updateStmt->close();
-                }
-                
-                $admin_stmt->close();
-                $conn->close();
-                
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Admin login successful',
-                    'type' => 'admin',
-                    'user' => [
-                        'id' => $admin['id'],
-                        'username' => $admin['username']
-                    ]
-                ]);
-                exit;
-            } else {
-                logDebug("Admin password verification FAILED");
-                $admin_stmt->close();
-                $conn->close();
-                
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Invalid username or password'
-                ]);
-                exit;
-            }
-        }
-        
-        $admin_stmt->close();
-        
-        // ===== STEP 2: Check if username is regular user =====
-        logDebug("Checking users table...");
-        $stmt = $conn->prepare("SELECT id, username, password, email FROM users WHERE username = ?");
-        
+        // Check if username exists
+        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
         if (!$stmt) {
-            logDebug("Prepare failed: " . $conn->error);
             throw new Exception("Prepare failed: " . $conn->error);
         }
         
         $stmt->bind_param("s", $username);
         $stmt->execute();
-        $result = $stmt->get_result();
-        
-        logDebug("Query executed. Rows found: " . $result->num_rows);
-        
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            logDebug("User found: " . $user['username']);
-            
-            // Verify password
-            $passwordVerified = password_verify($password, $user['password']);
-            logDebug("Password verification: " . ($passwordVerified ? "SUCCESS" : "FAILED"));
-            
-            if ($passwordVerified) {
-                // User login successful
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['logged_in'] = true;
-                
-                logDebug("Session created for user: " . $user['username']);
-                
-                // Update last login
-                $updateStmt = $conn->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
-                if ($updateStmt) {
-                    $updateStmt->bind_param("i", $user['id']);
-                    $updateStmt->execute();
-                    $updateStmt->close();
-                }
-                
-                $stmt->close();
-                $conn->close();
-                
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Login successful',
-                    'type' => 'user',
-                    'user' => [
-                        'id' => $user['id'],
-                        'username' => $user['username']
-                    ]
-                ]);
-                exit;
-            } else {
-                // Invalid password
-                logDebug("Invalid password for user: " . $username);
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Invalid username or password'
-                ]);
-            }
-        } else {
-            // User not found
-            logDebug("User not found: " . $username);
+        if ($stmt->get_result()->num_rows > 0) {
+            logDebug("Username already exists: " . $username);
             echo json_encode([
                 'success' => false,
-                'message' => 'Invalid username or password'
+                'message' => 'Username already exists'
             ]);
+            $stmt->close();
+            $conn->close();
+            exit;
+        }
+        $stmt->close();
+        
+        // Check if email exists
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $conn->error);
+        }
+        
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        if ($stmt->get_result()->num_rows > 0) {
+            logDebug("Email already registered: " . $email);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Email already registered'
+            ]);
+            $stmt->close();
+            $conn->close();
+            exit;
+        }
+        $stmt->close();
+        
+        // Hash password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        logDebug("Password hashed successfully");
+        
+        // Insert new user
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)");
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $conn->error);
+        }
+        
+        $stmt->bind_param("sss", $username, $email, $hashedPassword);
+        
+        if ($stmt->execute()) {
+            $userId = $conn->insert_id;
+            logDebug("User registered successfully: " . $username . " (ID: " . $userId . ")");
+            
+            // Auto login
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['username'] = $username;
+            
+            logDebug("Session created for new user: " . $username);
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Registration successful',
+                'user' => [
+                    'id' => $userId,
+                    'username' => $username
+                ]
+            ]);
+        } else {
+            logDebug("Registration failed: " . $stmt->error);
+            throw new Exception("Registration failed: " . $stmt->error);
         }
         
         $stmt->close();
@@ -193,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         logDebug("Exception: " . $e->getMessage());
         echo json_encode([
             'success' => false,
-            'message' => 'Database error'
+            'message' => 'Error: ' . $e->getMessage()
         ]);
     }
     exit;
@@ -206,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - UNDERTALE</title>
+    <title>Register - UNDERTALE</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         body {
@@ -217,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 0;
         }
 
-        .login-container {
+        .register-container {
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -225,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 20px;
         }
 
-        .login-box {
+        .register-box {
             background: #000;
             border: 8px dotted #fff;
             padding: 50px;
@@ -233,24 +214,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
         }
 
-        .login-header {
+        .register-header {
             text-align: center;
             margin-bottom: 40px;
         }
 
-        .login-header h1 {
+        .register-header h1 {
             font-size: 2.5rem;
             margin: 0 0 20px 0;
         }
 
-        .login-header p {
+        .register-header p {
             font-size: 0.8rem;
             color: #aaa;
             line-height: 2;
             margin: 0;
         }
 
-        .login-header .heart-small {
+        .register-header .heart-small {
             width: 40px;
             height: 40px;
             background: #ff0000;
@@ -260,8 +241,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             animation: heartbeat 1.5s infinite;
         }
 
-        .login-header .heart-small::before,
-        .login-header .heart-small::after {
+        .register-header .heart-small::before,
+        .register-header .heart-small::after {
             content: '';
             width: 40px;
             height: 40px;
@@ -270,12 +251,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             position: absolute;
         }
 
-        .login-header .heart-small::before {
+        .register-header .heart-small::before {
             top: -20px;
             left: 0;
         }
 
-        .login-header .heart-small::after {
+        .register-header .heart-small::after {
             left: 20px;
             top: 0;
         }
@@ -399,65 +380,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <div class="login-header">
+    <div class="register-container">
+        <div class="register-box">
+            <div class="register-header">
                 <div class="heart-small"></div>
-                <h1>WELCOME</h1>
+                <h1>REGISTER</h1>
                 <p style="font-size: 0.8rem; color: #aaa; line-height: 2;">
-                    Please enter your credentials<br>
-                    to continue your journey
+                    Create your account<br>
+                    and begin your journey
                 </p>
             </div>
 
             <div class="error-message" id="errorMessage">
-                <span id="errorText">* Login failed!<br>* Please check your credentials.</span>
+                <span id="errorText">* Registration failed!</span>
             </div>
 
             <div class="success-message" id="successMessage">
-                * Login successful!<br>
-                * Redirecting to game...
+                * Registration successful!<br>
+                * Loading game...
             </div>
 
-            <form id="loginForm">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="username">★ USERNAME</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter username">
+                    <input type="text" id="username" name="username" required placeholder="3+ chars (letters, numbers, _)">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">★ EMAIL</label>
+                    <input type="email" id="email" name="email" required placeholder="your@email.com">
                 </div>
 
                 <div class="form-group">
                     <label for="password">★ PASSWORD</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter password">
+                    <input type="password" id="password" name="password" required placeholder="6+ characters">
                 </div>
 
-                <button type="submit" class="submit-btn">★ LOGIN</button>
-
-                <div class="form-links">
-                    <p>Don't have an account? <a href="register.php">Register here</a></p>
-                    <p style="margin-top: 10px;"><a href="forgot-password.html">Forgot password?</a></p>
+                <div class="form-group">
+                    <label for="confirm_password">★ CONFIRM PASSWORD</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm password">
                 </div>
 
-                <div class="back-link">
-                    <a href="../index.php">← BACK TO HOME</a>
-                </div>
+                <button type="submit" class="submit-btn">★ REGISTER ★</button>
             </form>
+
+            <div class="form-links">
+                <p>Already have an account?<br><a href="login.php">Login here</a></p>
+            </div>
+
+            <div class="back-link">
+                <a href="../index.php">← BACK TO HOME</a>
+            </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
             
             // Send AJAX request
-            fetch('login.php', {
+            fetch('register.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+                body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&confirm_password=${encodeURIComponent(confirmPassword)}`
             })
             .then(response => response.json())
             .then(data => {
@@ -465,22 +457,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     document.getElementById('successMessage').style.display = 'block';
                     document.getElementById('errorMessage').style.display = 'none';
                     
-                    // Determine redirect based on login type
-                    let redirectUrl = '../index.php';
-                    if (data.type === 'admin') {
-                        redirectUrl = '../admin/dashboard.php';
-                    }
-                    
                     setTimeout(() => {
-                        window.location.href = redirectUrl;
+                        window.location.href = '../index.php';
                     }, 1500);
                 } else {
                     // Update error message
                     const errorText = document.getElementById('errorText');
                     if (errorText) {
-                        errorText.innerHTML = '* ' + (data.message || 'Login failed') + '<br>* Please try again.';
+                        errorText.innerHTML = '* ' + (data.message || 'Registration failed') + '<br>* Please try again.';
                     } else {
-                        document.getElementById('errorMessage').textContent = data.message || 'Login failed';
+                        document.getElementById('errorMessage').textContent = data.message || 'Registration failed';
                     }
                     document.getElementById('errorMessage').style.display = 'block';
                     document.getElementById('successMessage').style.display = 'none';

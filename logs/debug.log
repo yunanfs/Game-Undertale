@@ -199,3 +199,98 @@
 [2025-12-11 07:43:22] User found: sans
 [2025-12-11 07:43:22] Password verification: SUCCESS
 [2025-12-11 07:43:22] Session created for user: sans
+[2025-12-11 07:58:53] Login attempt for username: sans
+[2025-12-11 07:58:53] Database connected successfully
+[2025-12-11 07:58:53] Checking admin table...
+[2025-12-11 07:58:53] Checking users table...
+[2025-12-11 07:58:53] Query executed. Rows found: 1
+[2025-12-11 07:58:53] User found: sans
+[2025-12-11 07:58:54] Password verification: SUCCESS
+[2025-12-11 07:58:54] Session created for user: sans
+[2025-12-11 08:16:58] Register attempt for username: yunan
+[2025-12-11 08:16:58] Database connected successfully
+[2025-12-11 08:16:58] Password hashed successfully
+[2025-12-11 08:16:58] User registered successfully: yunan (ID: 4)
+[2025-12-11 08:16:58] Session created for new user: yunan
+[2025-12-11 08:22:15] Login attempt for username: sans
+[2025-12-11 08:22:15] Database connected successfully
+[2025-12-11 08:22:15] Checking admin table...
+[2025-12-11 08:22:15] Checking users table...
+[2025-12-11 08:22:15] Query executed. Rows found: 1
+[2025-12-11 08:22:15] User found: sans
+[2025-12-11 08:22:15] Password verification: SUCCESS
+[2025-12-11 08:22:15] Session created for user: sans
+[2025-12-11 08:22:44] Login attempt for username: yunan
+[2025-12-11 08:22:44] Database connected successfully
+[2025-12-11 08:22:44] Checking admin table...
+[2025-12-11 08:22:44] Checking users table...
+[2025-12-11 08:22:44] Query executed. Rows found: 1
+[2025-12-11 08:22:44] User found: yunan
+[2025-12-11 08:22:44] Password verification: SUCCESS
+[2025-12-11 08:22:44] Session created for user: yunan
+[2025-12-11 08:27:30] Login attempt for username: yunan
+[2025-12-11 08:27:30] Database connected successfully
+[2025-12-11 08:27:30] Checking admin table...
+[2025-12-11 08:27:30] Checking users table...
+[2025-12-11 08:27:30] Query executed. Rows found: 1
+[2025-12-11 08:27:30] User found: yunan
+[2025-12-11 08:27:30] Password verification: SUCCESS
+[2025-12-11 08:27:30] Session created for user: yunan
+[2025-12-11 08:27:46] Login attempt for username: yunan
+[2025-12-11 08:27:46] Database connected successfully
+[2025-12-11 08:27:46] Checking admin table...
+[2025-12-11 08:27:46] Checking users table...
+[2025-12-11 08:27:46] Query executed. Rows found: 1
+[2025-12-11 08:27:46] User found: yunan
+[2025-12-11 08:27:46] Password verification: SUCCESS
+[2025-12-11 08:27:46] Session created for user: yunan
+[2025-12-11 08:32:59] Login attempt for username: yunan
+[2025-12-11 08:32:59] Database connected successfully
+[2025-12-11 08:32:59] Checking admin table...
+[2025-12-11 08:32:59] Checking users table...
+[2025-12-11 08:32:59] Query executed. Rows found: 1
+[2025-12-11 08:32:59] User found: yunan
+[2025-12-11 08:32:59] Password verification: SUCCESS
+[2025-12-11 08:32:59] Session created for user: yunan
+[2025-12-11 08:33:18] Login attempt for username: yunan
+[2025-12-11 08:33:18] Database connected successfully
+[2025-12-11 08:33:18] Checking admin table...
+[2025-12-11 08:33:18] Checking users table...
+[2025-12-11 08:33:18] Query executed. Rows found: 1
+[2025-12-11 08:33:18] User found: yunan
+[2025-12-11 08:33:18] Password verification: SUCCESS
+[2025-12-11 08:33:18] Session created for user: yunan
+[2025-12-11 08:34:20] Login attempt for username: admin
+[2025-12-11 08:34:20] Database connected successfully
+[2025-12-11 08:34:20] Checking admin table...
+[2025-12-11 08:34:20] Admin found: admin
+[2025-12-11 08:34:20] Admin session created for: admin
+[2025-12-11 08:35:21] Login attempt for username: sans
+[2025-12-11 08:35:21] Database connected successfully
+[2025-12-11 08:35:21] Checking admin table...
+[2025-12-11 08:35:21] Checking users table...
+[2025-12-11 08:35:21] Query executed. Rows found: 1
+[2025-12-11 08:35:21] User found: sans
+[2025-12-11 08:35:21] Password verification: SUCCESS
+[2025-12-11 08:35:21] Session created for user: sans
+[2025-12-11 08:36:47] Register attempt for username: ejend
+[2025-12-11 08:36:47] Database connected successfully
+[2025-12-11 08:36:47] Password hashed successfully
+[2025-12-11 08:36:47] User registered successfully: ejend (ID: 5)
+[2025-12-11 08:36:47] Session created for new user: ejend
+[2025-12-11 08:40:19] Login attempt for username: sans
+[2025-12-11 08:40:19] Database connected successfully
+[2025-12-11 08:40:19] Checking admin table...
+[2025-12-11 08:40:19] Checking users table...
+[2025-12-11 08:40:19] Query executed. Rows found: 1
+[2025-12-11 08:40:19] User found: sans
+[2025-12-11 08:40:19] Password verification: SUCCESS
+[2025-12-11 08:40:19] Session created for user: sans
+[2025-12-11 08:52:29] Login attempt for username: yunan
+[2025-12-11 08:52:29] Database connected successfully
+[2025-12-11 08:52:29] Checking admin table...
+[2025-12-11 08:52:29] Checking users table...
+[2025-12-11 08:52:29] Query executed. Rows found: 1
+[2025-12-11 08:52:29] User found: yunan
+[2025-12-11 08:52:29] Password verification: SUCCESS
+[2025-12-11 08:52:29] Session created for user: yunan
