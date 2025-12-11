@@ -156,12 +156,16 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
             overflow: auto;
+            pointer-events: none;
+            visibility: hidden;
         }
 
         .modal.active {
             display: flex;
             justify-content: center;
             align-items: center;
+            pointer-events: auto;
+            visibility: visible;
         }
 
         .modal-content {
@@ -757,7 +761,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
     <!-- Character Modal -->
     <div class="modal" id="characterModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">X</button>
+            <button class="modal-close" onclick="closeModal('characterModal')">X</button>
             <div id="modalBody"></div>
         </div>
     </div>
@@ -768,7 +772,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         <button class="menu-btn" onclick="resetBattle()">CONTINUE</button>
     </div>
 
-    <script src="../js/script.js"></script>
+    <script src="js/script.js"></script>
     <script>
         // Toggle dropdown menu
         function toggleDropdown() {
@@ -802,6 +806,15 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         }
 
         function closeModal(modalId) {
+            // Handle character modal without ID (for script.js compatibility)
+            if (!modalId) {
+                const modal = document.getElementById('characterModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+                return;
+            }
+            
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('active');

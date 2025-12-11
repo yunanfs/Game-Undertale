@@ -622,10 +622,14 @@ h2 {
     z-index: 2000;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
+    visibility: hidden;
 }
 
 .modal.active {
     display: flex;
+    pointer-events: auto;
+    visibility: visible;
 }
 
 .modal-content {

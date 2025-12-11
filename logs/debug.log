@@ -139,3 +139,25 @@
 [2025-12-10 18:45:23] User found: sans
 [2025-12-10 18:45:23] Password verification: SUCCESS
 [2025-12-10 18:45:23] Session created for user: sans
+[2025-12-11 06:59:42] Login attempt for username: admin
+[2025-12-11 06:59:42] Database connected successfully
+[2025-12-11 06:59:42] Query executed. Rows found: 0
+[2025-12-11 06:59:42] User not found: admin
+[2025-12-11 06:59:56] Login attempt for username: sans
+[2025-12-11 06:59:56] Database connected successfully
+[2025-12-11 06:59:56] Query executed. Rows found: 1
+[2025-12-11 06:59:56] User found: sans
+[2025-12-11 06:59:56] Password verification: SUCCESS
+[2025-12-11 06:59:56] Session created for user: sans
+[2025-12-11 07:09:22] Login attempt for username: sans
+[2025-12-11 07:09:22] Database connected successfully
+[2025-12-11 07:09:22] Query executed. Rows found: 1
+[2025-12-11 07:09:22] User found: sans
+[2025-12-11 07:09:22] Password verification: SUCCESS
+[2025-12-11 07:09:22] Session created for user: sans
+[2025-12-11 07:21:26] Login attempt for username: sans
+[2025-12-11 07:21:26] Database connected successfully
+[2025-12-11 07:21:26] Query executed. Rows found: 1
+[2025-12-11 07:21:26] User found: sans
+[2025-12-11 07:21:27] Password verification: SUCCESS
+[2025-12-11 07:21:27] Session created for user: sans
