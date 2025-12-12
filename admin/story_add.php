@@ -35,8 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("sssii", $title, $description, $content, $order_number, $admin_id);
         
         if ($stmt->execute()) {
-            $success = 'Story berhasil ditambahkan!';
-            $_POST = [];
+            // Redirect to dashboard after success
+            header('Location: dashboard.php?success=Story+berhasil+ditambahkan');
+            exit;
         } else {
             $error = 'Gagal menambahkan story: ' . $stmt->error;
         }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Character Modal Test</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body { padding-top: 150px; }
+        .test-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .test-char { padding: 20px; margin: 10px; background: #1a1a1a; border: 3px solid #fff; cursor: pointer; display: inline-block; min-width: 150px; text-align: center; }
+        .test-char:hover { background: #333; }
+        .test-output { background: #000; border: 3px solid #0f0; padding: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; color: #0f0; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2 style="text-align: center;">⚠️ CHARACTER MODAL TEST ⚠️</h2>
+        <div style="text-align: center; margin-top: 40px;">
+            <div class="test-char" onclick="testShowModal(1)">Frisk</div>
+            <div class="test-char" onclick="testShowModal(2)">Flowey</div>
+            <div class="test-char" onclick="testShowModal(3)">Toriel</div>
+        </div>
+        
+        <div class="test-output" id="testOutput"></div>
+    </div>
+
+    <!-- Character Modal -->
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('characterModal')">X</button>
+            <div id="modalBody">Loading...</div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Test wrapper
+        function testShowModal(charId) {
+            const output = document.getElementById('testOutput');
+            output.innerHTML += `[${new Date().toLocaleTimeString()}] Testing showCharacterModal(${charId})<br>`;
+            output.scrollTop = output.scrollHeight;
+            
+            showCharacterModal(charId);
+        }
+
+        // Click outside to close
+        document.getElementById('characterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                const output = document.getElementById('testOutput');
+                output.innerHTML += `[${new Date().toLocaleTimeString()}] Modal closed<br>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Intercept console for testing
+        const testOutput = document.getElementById('testOutput');
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog(...args);
+            testOutput.innerHTML += `[LOG] ${args.join(' ')}<br>`;
+            testOutput.scrollTop = testOutput.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalError(...args);
+            testOutput.innerHTML += `[ERROR] ${args.join(' ')}<br>`;
+            testOutput.scrollTop = testOutput.scrollHeight;
+        };
+
+        testOutput.innerHTML += `Test started. Click on a character above.<br>`;
+    </script>
+</body>
+</html>

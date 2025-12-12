@@ -1,6 +1,24 @@
 <?php
 session_start();
 
+// Database connection
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$db = 'undertale_game';
+$conn = new mysqli($host, $user, $pass, $db);
+
+// Fetch Music
+$music_tracks = [];
+if (!$conn->connect_error) {
+    $result = $conn->query("SELECT * FROM music ORDER BY order_number ASC");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $music_tracks[] = $row;
+        }
+    }
+}
+
 // Check if user is logged in
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $username = $isLoggedIn ? $_SESSION['username'] : '';
@@ -604,71 +622,63 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         <div class="container">
             <h2>★ CHARACTERS ★</h2>
             <div class="characters-grid">
-                <div class="character-card" onclick="showCharacterModal('frisk')">
-                    <div class="character-img">👤</div>
-                    <h3 class="character-name">FRISK</h3>
-                    <p class="character-desc">The protagonist. A human child who falls into the Underground.</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>20</span></div>
-                        <div class="stat"><span>AT:</span><span>10</span></div>
-                        <div class="stat"><span>DF:</span><span>10</span></div>
-                    </div>
-                </div>
-
-                <div class="character-card" onclick="showCharacterModal('sans')">
-                    <div class="character-img">💀</div>
-                    <h3 class="character-name">SANS</h3>
-                    <p class="character-desc">A lazy skeleton who loves puns and ketchup.</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>1</span></div>
-                        <div class="stat"><span>AT:</span><span>1</span></div>
-                        <div class="stat"><span>DF:</span><span>1</span></div>
-                    </div>
-                </div>
-
-                <div class="character-card" onclick="showCharacterModal('papyrus')">
-                    <div class="character-img">🦴</div>
-                    <h3 class="character-name">PAPYRUS</h3>
-                    <p class="character-desc">Sans's enthusiastic brother. Dreams of joining the Royal Guard!</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>680</span></div>
-                        <div class="stat"><span>AT:</span><span>20</span></div>
-                        <div class="stat"><span>DF:</span><span>20</span></div>
-                    </div>
-                </div>
-
-                <div class="character-card" onclick="showCharacterModal('toriel')">
-                    <div class="character-img">👑</div>
-                    <h3 class="character-name">TORIEL</h3>
-                    <p class="character-desc">The caretaker of the Ruins. Protects humans who fall down.</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>440</span></div>
-                        <div class="stat"><span>AT:</span><span>80</span></div>
-                        <div class="stat"><span>DF:</span><span>80</span></div>
-                    </div>
-                </div>
-
-                <div class="character-card" onclick="showCharacterModal('undyne')">
-                    <div class="character-img">🐟</div>
-                    <h3 class="character-name">UNDYNE</h3>
-                    <p class="character-desc">Head of the Royal Guard. Passionate about justice!</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>1500</span></div>
-                        <div class="stat"><span>AT:</span><span>50</span></div>
-                        <div class="stat"><span>DF:</span><span>20</span></div>
-                    </div>
-                </div>
-
-                <div class="character-card" onclick="showCharacterModal('flowey')">
-                    <div class="character-img">🌻</div>
-                    <h3 class="character-name">FLOWEY</h3>
-                    <p class="character-desc">A friendly flower... or is he?</p>
-                    <div class="character-stats">
-                        <div class="stat"><span>HP:</span><span>???</span></div>
-                        <div class="stat"><span>AT:</span><span>???</span></div>
-                        <div class="stat"><span>DF:</span><span>???</span></div>
-                    </div>
-                </div>
+                <?php
+                // Fetch characters from database
+                try {
+                    $char_conn = new mysqli('localhost', 'root', '', 'undertale_game');
+                    if ($char_conn->connect_error) {
+                        throw new Exception("Connection failed");
+                    }
+                    
+                    $char_conn->set_charset("utf8mb4");
+                    $result = $char_conn->query("SELECT id, name, description, role, image_url FROM characters ORDER BY id ASC");
+                    
+                    if ($result && $result->num_rows > 0) {
+                        while ($char = $result->fetch_assoc()) {
+                            $char_id = htmlspecialchars($char['id']);
+                            $char_name = htmlspecialchars($char['name']);
+                            $char_desc = htmlspecialchars($char['description']);
+                            $char_img = htmlspecialchars($char['image_url'] ?? '');
+                            
+                            // Determine if image is a URL or file path
+                            $is_url = !empty($char_img) && (strpos($char_img, 'http') === 0);
+                            $is_file = !empty($char_img) && file_exists(__DIR__ . '/' . $char_img);
+                            
+                            echo '<div class="character-card" onclick="showCharacterModal(\'' . addslashes(strtolower($char_name)) . '\')">';
+                            echo '    <div class="character-img">';
+                            
+                            if ($is_url || $is_file) {
+                                echo '<img src="' . $char_img . '" alt="' . $char_name . '" style="width: 100%; height: 100%; object-fit: contain;">';
+                            } else {
+                                $char_icons = [
+                                    'frisk' => '👤',
+                                    'sans' => '💀',
+                                    'papyrus' => '🦴',
+                                    'toriel' => '👑',
+                                    'undyne' => '🐟',
+                                    'flowey' => '🌻',
+                                    'flower pot' => '🪴',
+                                    'fahri' => '🧑',
+                                    'agoyy' => '💀'
+                                ];
+                                $lower_name = strtolower($char_name);
+                                $icon = isset($char_icons[$lower_name]) ? $char_icons[$lower_name] : '👤';
+                                echo '<div style="font-size: 4rem;">' . $icon . '</div>';
+                            }
+                            
+                            echo '    </div>';
+                            echo '    <h3 class="character-name">' . strtoupper($char_name) . '</h3>';
+                            echo '    <p class="character-desc">' . $char_desc . '</p>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p style="grid-column: 1/-1; text-align: center; color: #aaa;">No characters found.</p>';
+                    }
+                    $char_conn->close();
+                } catch (Exception $e) {
+                    echo '<p style="grid-column: 1/-1; text-align: center; color: #ff0000;">Error loading characters</p>';
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -740,7 +750,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             <div class="music-player">
                 <div class="now-playing">
                     <div>NOW PLAYING:</div>
-                    <div class="track-name" id="currentTrack">Once Upon a Time</div>
+                    <div class="track-name" id="currentTrack"><?php echo !empty($music_tracks) ? htmlspecialchars($music_tracks[0]['title']) : 'No Music'; ?></div>
                 </div>
                 <div class="player-controls">
                     <button class="control-btn" onclick="previousTrack()">◀</button>
@@ -748,11 +758,19 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                     <button class="control-btn" onclick="nextTrack()">▶▶</button>
                 </div>
                 <div class="playlist">
-                    <div class="track active" onclick="selectTrack(0)">01. Once Upon a Time</div>
-                    <div class="track" onclick="selectTrack(1)">02. Your Best Friend</div>
-                    <div class="track" onclick="selectTrack(2)">03. Fallen Down</div>
-                    <div class="track" onclick="selectTrack(3)">04. Megalovania</div>
-                    <div class="track" onclick="selectTrack(4)">05. Death by Glamour</div>
+                    <?php if (!empty($music_tracks)): ?>
+                        <?php foreach ($music_tracks as $index => $track): ?>
+                            <div class="track <?php echo $index === 0 ? 'active' : ''; ?>" onclick="selectTrack(<?php echo $index; ?>)">
+                                <?php echo str_pad($index + 1, 2, '0', STR_PAD_LEFT) . '. ' . htmlspecialchars($track['title']); ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="track">No music available</div>
+                    <?php endif; ?>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -785,7 +803,15 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         <button class="menu-btn" onclick="resetBattle()">CONTINUE</button>
     </div>
 
-    <script src="js/script.js"></script>
+    <script>
+        const dbTracks = <?php echo json_encode(array_map(function($t) {
+            return [
+                'title' => $t['title'],
+                'file' => $t['file_path']
+            ];
+        }, $music_tracks)); ?>;
+    </script>
+    <script src="js/script.js?v=<?php echo time(); ?>"></script>
     <script>
         // Toggle dropdown menu
         function toggleDropdown() {
@@ -807,14 +833,6 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('active');
-                document.getElementById('dropdownMenu').classList.remove('active');
-                
-                // Load profile data if opening profile modal
-                if (modalId === 'profileModal') {
-                    loadProfileData();
-                } else if (modalId === 'editModal') {
-                    loadEditData();
-                }
             }
         }
 
@@ -988,6 +1006,12 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                     window.location.href = 'index.php';
                 });
         }
+
+        // Diagnostic: log that showCharacterModal exists
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded. Checking showCharacterModal function...');
+            console.log('showCharacterModal type:', typeof showCharacterModal);
+        });
     </script>
 </body>
 </html>

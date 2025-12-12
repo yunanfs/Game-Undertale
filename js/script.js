@@ -22,7 +22,7 @@ function updateHP(newHp) {
     const percentage = (playerHp / maxHp) * 100;
     document.getElementById('playerHp').style.width = percentage + '%';
     document.getElementById('hpText').textContent = playerHp + ' / ' + maxHp;
-    
+
     if (playerHp <= 0) {
         gameOver();
     }
@@ -37,12 +37,12 @@ function handleFight() {
     totalDamage += damage;
     enemyHp -= damage;
     score += damage * 10;
-    
+
     updateStats();
-    
-    document.getElementById('battleText').innerHTML = 
+
+    document.getElementById('battleText').innerHTML =
         `* You attacked FROGGIT!<br>* Dealt ${damage} damage!<br>* Enemy HP: ${Math.max(0, enemyHp)}/${maxEnemyHp}<br>* Get ready to dodge!`;
-    
+
     if (enemyHp <= 0) {
         setTimeout(victory, 1500);
     } else {
@@ -55,18 +55,18 @@ function handleAct() {
     battlePhase = 'choose';
     turnCount++;
     score += 50;
-    
+
     updateStats();
-    
+
     const actions = [
         '* You checked FROGGIT.<br>* ATK 4 DEF 1<br>* Life is difficult for this enemy.',
         '* You complimented FROGGIT.<br>* FROGGIT doesn\'t know how to react!',
         '* You threatened FROGGIT.<br>* FROGGIT is scared!',
         '* You told FROGGIT a joke.<br>* FROGGIT is confused.'
     ];
-    
+
     document.getElementById('battleText').innerHTML = actions[Math.floor(Math.random() * actions.length)];
-    
+
     setTimeout(() => {
         battlePhase = 'choose';
         document.getElementById('battleText').innerHTML = '* What will you do?';
@@ -79,12 +79,12 @@ function handleItem() {
     const healAmount = 10;
     updateHP(playerHp + healAmount);
     score += 30;
-    
+
     updateStats();
-    
-    document.getElementById('battleText').innerHTML = 
+
+    document.getElementById('battleText').innerHTML =
         `* You ate a Monster Candy.<br>* Recovered ${healAmount} HP!<br>* HP: ${playerHp}/${maxHp}`;
-    
+
     setTimeout(() => {
         battlePhase = 'choose';
         document.getElementById('battleText').innerHTML = '* What will you do?';
@@ -95,12 +95,12 @@ function handleMercy() {
     if (battlePhase !== 'choose') return;
     turnCount++;
     score += 200;
-    
+
     updateStats();
-    
-    document.getElementById('battleText').innerHTML = 
+
+    document.getElementById('battleText').innerHTML =
         `* You showed MERCY to FROGGIT.<br>* FROGGIT spared you back.<br>* Battle ended peacefully!`;
-    
+
     setTimeout(victory, 2000);
 }
 
@@ -116,7 +116,7 @@ function startDodgePhase() {
     document.getElementById('battleText').innerHTML = '* FROGGIT attacks! Dodge the bullets!';
     bullets = [];
     createBulletPattern();
-    
+
     setTimeout(() => {
         battlePhase = 'choose';
         clearBullets();
@@ -132,7 +132,7 @@ function createBulletPattern() {
         createCirclePattern,
         createRandomPattern
     ];
-    
+
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];
     pattern(arena);
 }
@@ -171,7 +171,7 @@ function createCirclePattern(arena) {
     const centerX = arena.offsetWidth / 2;
     const centerY = arena.offsetHeight / 2;
     const radius = 100;
-    
+
     for (let i = 0; i < 12; i++) {
         setTimeout(() => {
             const angle = (i / 12) * Math.PI * 2;
@@ -249,14 +249,14 @@ function animateBulletRadial(bullet, angle) {
 function checkCollision(bullet) {
     const soul = document.getElementById('playerSoul');
     if (!soul) return;
-    
+
     const soulRect = soul.getBoundingClientRect();
     const bulletRect = bullet.getBoundingClientRect();
-    
-    if (!(soulRect.right < bulletRect.left || 
-          soulRect.left > bulletRect.right || 
-          soulRect.bottom < bulletRect.top || 
-          soulRect.top > bulletRect.bottom)) {
+
+    if (!(soulRect.right < bulletRect.left ||
+        soulRect.left > bulletRect.right ||
+        soulRect.bottom < bulletRect.top ||
+        soulRect.top > bulletRect.bottom)) {
         updateHP(playerHp - 3);
         bullet.remove();
         flashScreen();
@@ -289,11 +289,11 @@ document.addEventListener('keyup', (e) => {
 function moveSoul() {
     const soul = document.getElementById('playerSoul');
     if (!soul) return;
-    
+
     const speed = 6;
     const rect = soul.getBoundingClientRect();
     const arena = document.querySelector('.battle-arena').getBoundingClientRect();
-    
+
     if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
         if (rect.left > arena.left + 15) {
             soul.style.left = (soul.offsetLeft - speed) + 'px';
@@ -337,18 +337,18 @@ function resetBattle() {
     totalDamage = 0;
     score = 0;
     battlePhase = 'choose';
-    
+
     updateHP(20);
     updateStats();
     clearBullets();
-    
+
     const soul = document.getElementById('playerSoul');
     if (soul) {
         soul.style.left = '50%';
         soul.style.bottom = '50px';
     }
-    
-    document.getElementById('battleText').innerHTML = 
+
+    document.getElementById('battleText').innerHTML =
         '* A wild FROGGIT appeared!<br>* It doesn\'t seem to know why it\'s here.';
     document.getElementById('gameOver').classList.remove('active');
     document.getElementById('victory').classList.remove('active');
@@ -397,65 +397,155 @@ const characterData = {
         description: 'A sentient flower with sinister motives.',
         quote: '"In this world, it\'s kill or BE killed!"',
         abilities: 'SAVE and LOAD, friendliness pellets'
+    },
+    'flower pot': {
+        name: 'FLOWER POT',
+        icon: '🪴',
+        description: 'Just a normal flower pot. Or is it?',
+        quote: '"..."',
+        abilities: 'Photosynthesis, sitting still'
+    },
+    fahri: {
+        name: 'FAHRI',
+        icon: '🧑',
+        description: 'A mysterious character added to the game.',
+        quote: '"Hello world!"',
+        abilities: 'Coding, debugging'
     }
 };
 
-function showCharacterModal(char) {
-    const data = characterData[char];
+function showCharacterModal(charId) {
     const modal = document.getElementById('characterModal');
-    const body = document.getElementById('modalBody');
-    
-    body.innerHTML = `
-        <div style="text-align: center; font-size: 5rem; margin: 20px 0;">${data.icon}</div>
-        <h2 style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">${data.name}</h2>
-        <p style="font-size: 0.8rem; line-height: 2; margin-bottom: 20px;">${data.description}</p>
-        <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0;">
-            <strong style="font-size: 0.9rem;">ABILITIES:</strong><br>
-            <span style="font-size: 0.75rem; color: #aaa;">${data.abilities}</span>
-        </div>
-        <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0; background: rgba(255,255,255,0.1);">
-            <strong style="font-size: 0.9rem;">QUOTE:</strong><br>
-            <span style="font-size: 0.75rem; font-style: italic; color: #aaa;">${data.quote}</span>
-        </div>
-    `;
-    
-    modal.classList.add('active');
+    if (!modal) return;
+
+    // Check if we have local data for this character
+    // charId is now the name (e.g., 'frisk') passed from index.php
+    const normalizedId = String(charId).toLowerCase().trim();
+    const char = characterData[normalizedId];
+
+    if (char) {
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div style="text-align: center; font-size: 5rem; margin: 20px 0; min-height: 120px; display: flex; align-items: center; justify-content: center;">${char.icon}</div>
+            <h2 style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">${char.name}</h2>
+            <p style="font-size: 0.8rem; line-height: 2; margin-bottom: 20px; text-align: center;">${char.description}</p>
+            <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0;">
+                <strong style="font-size: 0.9rem;">QUOTE:</strong><br>
+                <span style="font-size: 0.75rem; color: #aaa; font-style: italic;">${char.quote}</span>
+            </div>
+            <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0; background: rgba(255,255,255,0.1);">
+                <strong style="font-size: 0.9rem;">ABILITIES:</strong><br>
+                <span style="font-size: 0.75rem; color: #aaa;">${char.abilities}</span>
+            </div>
+        `;
+        modal.classList.add('active');
+    } else {
+        // Fallback for debugging or if ID was passed
+        console.log('Character data not found for:', charId);
+
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `<p style="text-align: center; color: #ff0000;">Character data missing for: ${charId}</p>`;
+        modal.classList.add('active');
+    }
 }
 
-function closeModal() {
-    document.getElementById('characterModal').classList.remove('active');
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId || 'characterModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 // Music Player
-const tracks = [
-    'Once Upon a Time',
-    'Your Best Friend',
-    'Fallen Down',
-    'Megalovania',
-    'Death by Glamour'
-];
-
+// Music Player
+let tracks = [];
+let trackFiles = [];
+let audioPlayer = new Audio();
 let currentTrackIndex = 0;
 let isPlaying = false;
+
+if (typeof dbTracks !== 'undefined' && dbTracks.length > 0) {
+    tracks = dbTracks.map(t => t.title);
+    trackFiles = dbTracks.map(t => t.file);
+} else {
+    // Fallback if no DB tracks
+    tracks = ['No Music Available'];
+    trackFiles = [];
+}
 
 function selectTrack(index) {
     currentTrackIndex = index;
     document.querySelectorAll('.track').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.track')[index].classList.add('active');
-    document.getElementById('currentTrack').textContent = tracks[index];
+
+    const trackElements = document.querySelectorAll('.track');
+    if (trackElements[index]) {
+        trackElements[index].classList.add('active');
+    }
+
+    if (tracks[index]) {
+        document.getElementById('currentTrack').textContent = tracks[index];
+    }
+
+    if (trackFiles[index]) {
+        console.log("Loading  track:", tracks[index], "from", trackFiles[index]);
+        audioPlayer.src = trackFiles[index];
+
+        // Add error listener
+        audioPlayer.onerror = (e) => {
+            console.error("Error loading audio source:", audioPlayer.error);
+            alert("Error loading audio file. Check console for details.");
+        };
+
+        // Auto-play
+        const playPromise = audioPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Playback started successfully.");
+                isPlaying = true;
+                document.getElementById('playBtn').textContent = '❚❚';
+            }).catch(error => {
+                console.error("Playback failed (autoplay policy or other):", error);
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶';
+            });
+        }
+    } else {
+        console.warn("No file defined for track index:", index);
+    }
 }
 
 function togglePlay() {
-    isPlaying = !isPlaying;
-    document.getElementById('playBtn').textContent = isPlaying ? '❚❚' : '▶';
+    if (isPlaying) {
+        audioPlayer.pause();
+        isPlaying = false;
+        document.getElementById('playBtn').textContent = '▶';
+    } else {
+        if (!audioPlayer.src && trackFiles[currentTrackIndex]) {
+            selectTrack(currentTrackIndex); // Load and play
+        } else if (audioPlayer.src) {
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    document.getElementById('playBtn').textContent = '❚❚';
+                }).catch(error => {
+                    console.error("Playback failed:", error);
+                    isPlaying = false;
+                    document.getElementById('playBtn').textContent = '▶';
+                });
+            }
+        }
+    }
 }
 
 function previousTrack() {
+    if (tracks.length === 0) return;
     currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
     selectTrack(currentTrackIndex);
 }
 
 function nextTrack() {
+    if (tracks.length === 0) return;
     currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
     selectTrack(currentTrackIndex);
 }

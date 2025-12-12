@@ -25,6 +25,7 @@ $admin_username = $_SESSION['admin_username'] ?? 'Admin';
 $stories_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM stories"))['count'] ?? 0;
 $characters_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM characters"))['count'] ?? 0;
 $users_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM users"))['count'] ?? 0;
+$music_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM music"))['count'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +80,127 @@ $users_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
             background: #fff;
             color: #ff0000;
         }
+
+        /* Logout Modal */
+        .logout-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logout-modal-overlay.active {
+            display: flex;
+        }
+
+        .logout-modal-content {
+            background: #000;
+            border: 4px solid #ff0000;
+            padding: 50px 40px 60px 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .logout-modal-icon {
+            font-size: 60px;
+            margin-bottom: 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .logout-modal-content h2 {
+            color: #fff;
+            font-family: 'Press Start 2P', cursive, monospace;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0px #ff0000;
+            letter-spacing: 2px;
+        }
+
+        .logout-modal-content p {
+            color: #fff;
+            font-family: 'Press Start 2P', cursive, monospace;
+            font-size: 0.8rem;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+
+        .logout-modal-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .logout-modal-btn {
+            background: #000;
+            color: #fff;
+            border: 4px solid #fff;
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive, monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            position: relative;
+            box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .logout-modal-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .logout-modal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-modal-btn.confirm {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background: #ff0000;
+            color: #fff;
+            box-shadow: 8px 8px 0px rgba(255, 0, 0, 0.5);
+        }
+
+        .logout-modal-btn.confirm:active {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        .logout-modal-btn.cancel {
+            border-color: #fff;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 8px 8px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .logout-modal-btn.cancel:active {
+            background: #fff;
+            color: #000;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         
         .dashboard-grid {
             display: grid;
@@ -221,7 +343,20 @@ $users_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
         <div class="navbar-logo">★ UNDERTALE ADMIN ★</div>
         <div class="navbar-right">
             <span class="admin-badge">★ <?php echo htmlspecialchars($admin_username); ?> ★</span>
-            <a href="../php/admin_logout.php" class="logout-btn">LOGOUT</a>
+            <button onclick="openLogoutModal()" class="logout-btn">LOGOUT</button>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModalOverlay">
+        <div class="logout-modal-content">
+            <div class="logout-modal-icon">❤</div>
+            <h2>Are you sure?</h2>
+            <p>Do you really want to<br>leave?</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-modal-btn confirm" onclick="confirmAdminLogout()">★ YES ★</button>
+                <button class="logout-modal-btn cancel" onclick="closeLogoutModal()">★ NO ★</button>
+            </div>
         </div>
     </div>
 
@@ -266,7 +401,39 @@ $users_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                     <a href="users.php" class="btn primary">VIEW</a>
                 </div>
             </div>
+
+            <!-- Music Card -->
+            <div class="dashboard-card">
+                <h2>MUSIC</h2>
+                <div class="stat-number"><?php echo $music_count; ?></div>
+                <p style="font-size: 0.7rem; color: #aaa;">Tracks uploaded</p>
+                <div class="card-actions">
+                    <a href="musics.php" class="btn primary">VIEW</a>
+                    <a href="music_add.php" class="btn">ADD NEW</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        function openLogoutModal() {
+            document.getElementById('logoutModalOverlay').classList.add('active');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModalOverlay').classList.remove('active');
+        }
+
+        function confirmAdminLogout() {
+            window.location.href = '../php/admin_logout.php';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('logoutModalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogoutModal();
+            }
+        });
+    </script>
 </body>
 </html>

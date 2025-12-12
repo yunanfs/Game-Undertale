@@ -423,6 +423,7 @@ h2 {
     padding: 25px;
     cursor: pointer;
     transition: all 0.3s;
+    pointer-events: auto;
 }
 
 .character-card:hover {

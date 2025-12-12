@@ -37,30 +37,62 @@ if (!$character) {
     exit;
 }
 
+// Create uploads directory if it doesn't exist
+$upload_dir = __DIR__ . '/../assets/uploads/characters/';
+if (!is_dir($upload_dir)) {
+    mkdir($upload_dir, 0755, true);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $description = trim($_POST['description'] ?? '');
     $role = trim($_POST['role'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
-    $image_url = trim($_POST['image_url'] ?? '');
+    
+    // Default to existing image
+    $image_url = $character['image_url'];
     
     if (empty($name)) {
         $error = 'Name harus diisi!';
     } else {
-        $stmt = $conn->prepare("UPDATE characters SET name = ?, description = ?, role = ?, bio = ?, image_url = ? WHERE id = ?");
-        $stmt->bind_param("sssssi", $name, $description, $role, $bio, $image_url, $character_id);
-        
-        if ($stmt->execute()) {
-            $success = 'Character berhasil diupdate!';
-            $character['name'] = $name;
-            $character['description'] = $description;
-            $character['role'] = $role;
-            $character['bio'] = $bio;
-            $character['image_url'] = $image_url;
-        } else {
-            $error = 'Gagal mengupdate character: ' . $stmt->error;
+        // Handle file upload
+        if (isset($_FILES['character_image']) && $_FILES['character_image']['error'] === UPLOAD_ERR_OK) {
+            $file_tmp = $_FILES['character_image']['tmp_name'];
+            $file_name = $_FILES['character_image']['name'];
+            $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+            
+            // Allowed extensions
+            $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
+            
+            if (in_array($file_ext, $allowed_ext)) {
+                // Generate unique filename
+                $unique_name = time() . '_' . uniqid() . '.' . $file_ext;
+                $file_path = $upload_dir . $unique_name;
+                
+                // Move uploaded file
+                if (move_uploaded_file($file_tmp, $file_path)) {
+                    $image_url = 'assets/uploads/characters/' . $unique_name;
+                } else {
+                    $error = 'Gagal upload gambar!';
+                }
+            } else {
+                $error = 'Format gambar harus JPG, PNG, atau GIF!';
+            }
         }
-        $stmt->close();
+        
+        if (empty($error)) {
+            $stmt = $conn->prepare("UPDATE characters SET name = ?, description = ?, role = ?, bio = ?, image_url = ? WHERE id = ?");
+            $stmt->bind_param("sssssi", $name, $description, $role, $bio, $image_url, $character_id);
+            
+            if ($stmt->execute()) {
+                // Redirect to dashboard after success
+                header('Location: dashboard.php?success=Character+berhasil+diupdate');
+                exit;
+            } else {
+                $error = 'Gagal mengupdate character: ' . $stmt->error;
+            }
+            $stmt->close();
+        }
     }
 }
 ?>
@@ -113,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         input[type="text"],
-        input[type="url"],
+        input[type="file"],
         textarea {
             width: 100%;
             padding: 12px;
@@ -123,6 +155,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-family: 'Press Start 2P', monospace;
             font-size: 0.65rem;
             box-sizing: border-box;
+        }
+        
+        input[type="file"] {
+            padding: 10px;
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: #0f0;
+            color: #000;
+            border: 2px solid #0f0;
+            padding: 8px 15px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        input[type="file"]::file-selector-button:hover {
+            background: #000;
+            color: #0f0;
+            border-color: #0f0;
         }
         
         input:focus,
@@ -272,7 +325,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="success-message">✓ <?php echo htmlspecialchars($success); ?></div>
             <?php endif; ?>
             
-            <form method="POST" action="">
+            <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">CHARACTER NAME *</label>
@@ -291,8 +344,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 
                 <div class="form-group">
-                    <label for="image_url">IMAGE URL</label>
-                    <input type="url" id="image_url" name="image_url" value="<?php echo htmlspecialchars($character['image_url']); ?>">
+                    <label for="character_image">CHARACTER IMAGE</label>
+                    <?php if (!empty($character['image_url'])): ?>
+                        <div style="margin-bottom: 15px; border: 1px solid #333; padding: 10px; display: inline-block;">
+                            <img src="../<?php echo htmlspecialchars($character['image_url']); ?>" alt="Current Image" style="max-height: 100px; display: block; margin-bottom: 5px;">
+                            <div style="font-size: 0.5rem; color: #aaa;">Current: <?php echo htmlspecialchars($character['image_url']); ?></div>
+                        </div>
+                    <?php endif; ?>
+                    <input type="file" id="character_image" name="character_image" accept="image/*">
+                    <div style="font-size: 0.5rem; color: #aaa; margin-top: 5px;">Leave empty to keep current image</div>
                 </div>
                 
                 <div class="form-group">

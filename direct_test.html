@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Test Click</title>
+    <style>
+        body { background: #000; color: #fff; font-family: 'Press Start 2P', cursive; padding: 40px; }
+        .btn { background: #fff; color: #000; border: 3px solid #fff; padding: 15px 30px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 1rem; }
+        .btn:hover { background: #000; color: #fff; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: #000; border: 6px solid #fff; padding: 40px; max-width: 600px; width: 90%; text-align: center; }
+        .close-btn { float: right; background: #fff; color: #000; border: 3px solid #fff; padding: 10px 20px; cursor: pointer; font-family: 'Press Start 2P', cursive; }
+        
+        .test-area { margin: 30px 0; padding: 20px; border: 4px solid #fff; }
+        .char-card { background: #222; border: 3px solid #fff; padding: 20px; margin: 10px 0; cursor: pointer; }
+        .char-card:hover { background: #333; }
+        .output { background: #111; border: 1px solid #0f0; color: #0f0; padding: 10px; margin-top: 20px; max-height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+    <h1>★ DIRECT CLICK TEST ★</h1>
+    
+    <div class="test-area">
+        <h2>Test Buttons (Direct onclick):</h2>
+        <button class="btn" onclick="testDirectClick(1)">Click Me - Test 1</button>
+        <button class="btn" onclick="testDirectClick(2)">Click Me - Test 2</button>
+    </div>
+    
+    <div class="test-area">
+        <h2>Character Cards (Using showCharacterModal):</h2>
+        <div class="char-card" onclick="showCharacterModal(1)">Frisk</div>
+        <div class="char-card" onclick="showCharacterModal(2)">Flowey</div>
+        <div class="char-card" onclick="showCharacterModal(3)">Toriel</div>
+    </div>
+    
+    <div class="output" id="output"></div>
+    
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('characterModal')">X</button>
+            <h2 id="charTitle">Character</h2>
+            <p id="charInfo">Info</p>
+        </div>
+    </div>
+
+    <script>
+        const outputEl = document.getElementById('output');
+        
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            outputEl.innerHTML += `[${time}] ${msg}<br>`;
+            outputEl.scrollTop = outputEl.scrollHeight;
+        }
+        
+        function testDirectClick(num) {
+            log(`testDirectClick(${num}) - direct function works!`);
+        }
+        
+        function showCharacterModal(charId) {
+            log(`showCharacterModal(${charId}) called`);
+            
+            const modal = document.getElementById('characterModal');
+            if (!modal) {
+                log('ERROR: Modal element not found!');
+                return;
+            }
+            
+            log('Step 1: Modal found');
+            log('Step 2: Current display: ' + window.getComputedStyle(modal).display);
+            log('Step 3: Adding active class...');
+            
+            modal.classList.add('active');
+            
+            log('Step 4: Added active class');
+            log('Step 5: New display: ' + window.getComputedStyle(modal).display);
+            log('Step 6: Modal className: ' + modal.className);
+            
+            document.getElementById('charTitle').textContent = 'Character ' + charId;
+            log('SUCCESS: Modal should be visible now!');
+        }
+        
+        function closeModal(modalId) {
+            log(`closeModal(${modalId}) called`);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                log('Modal closed');
+            }
+        }
+        
+        log('Page ready - try clicking buttons above');
+        log('Function typeof: ' + typeof showCharacterModal);
+    </script>
+</body>
+</html>

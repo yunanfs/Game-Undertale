@@ -50,11 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("sssii", $title, $description, $content, $order_number, $story_id);
         
         if ($stmt->execute()) {
-            $success = 'Story berhasil diupdate!';
-            $story['title'] = $title;
-            $story['description'] = $description;
-            $story['content'] = $content;
-            $story['order_number'] = $order_number;
+            // Redirect to dashboard after success
+            header('Location: dashboard.php?success=Story+berhasil+diupdate');
+            exit;
         } else {
             $error = 'Gagal mengupdate story: ' . $stmt->error;
         }
