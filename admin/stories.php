@@ -332,7 +332,20 @@ if ($result) {
         <div class="navbar-logo">★ STORIES MANAGEMENT ★</div>
         <div class="navbar-right">
             <a href="dashboard.php" class="back-btn">← DASHBOARD</a>
-            <a href="../php/admin_logout.php" class="back-btn" style="background: #ff0000; border-color: #ff0000;">LOGOUT</a>
+            <button onclick="openLogoutModal()" class="back-btn" style="background: #ff0000; border-color: #ff0000; cursor: pointer;">LOGOUT</button>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModalOverlay">
+        <div class="logout-modal-content">
+            <div class="logout-modal-icon">❤</div>
+            <h2>Are you sure?</h2>
+            <p>Do you really want to<br>leave?</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-modal-btn confirm" onclick="confirmAdminLogout()">★ YES ★</button>
+                <button class="logout-modal-btn cancel" onclick="closeLogoutModal()">★ NO ★</button>
+            </div>
         </div>
     </div>
 
@@ -392,6 +405,25 @@ if ($result) {
     </div>
 
     <script>
+        function openLogoutModal() {
+            document.getElementById('logoutModalOverlay').classList.add('active');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModalOverlay').classList.remove('active');
+        }
+
+        function confirmAdminLogout() {
+            window.location.href = '../php/admin_logout.php';
+        }
+
+        // Close logout modal when clicking outside
+        document.getElementById('logoutModalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogoutModal();
+            }
+        });
+
         function openDeleteModal(deleteUrl) {
             document.getElementById('confirmDeleteBtn').href = deleteUrl;
             document.getElementById('deleteModalOverlay').classList.add('active');

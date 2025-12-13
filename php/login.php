@@ -437,9 +437,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p style="margin-top: 10px;"><a href="forgot-password.html">Forgot password?</a></p>
                 </div>
 
-                <div class="back-link">
-                    <a href="../index.php">← BACK TO HOME</a>
-                </div>
+
             </form>
         </div>
     </div>

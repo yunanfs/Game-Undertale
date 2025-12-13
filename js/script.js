@@ -320,6 +320,7 @@ function moveSoul() {
 function gameOver() {
     clearBullets();
     document.getElementById('gameOver').classList.add('active');
+    sendBattleResult('loss');
 }
 
 function victory() {
@@ -328,6 +329,29 @@ function victory() {
     document.getElementById('finalDamage').textContent = totalDamage;
     document.getElementById('finalScore').textContent = score;
     document.getElementById('victory').classList.add('active');
+    sendBattleResult('win');
+}
+
+function sendBattleResult(result) {
+    // result should be 'win' or 'loss'
+    const formData = new FormData();
+    formData.append('result', result);
+
+    fetch('api/update_battle_stats.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Battle result recorded:', result);
+            } else {
+                console.error('Failed to record battle result:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending battle result:', error);
+        });
 }
 
 function resetBattle() {

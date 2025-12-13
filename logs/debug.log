@@ -498,3 +498,171 @@
 [2025-12-12 18:20:21] User found: yunan
 [2025-12-12 18:20:21] Password verification: SUCCESS
 [2025-12-12 18:20:21] Session created for user: yunan
+[2025-12-13 04:22:00] Login attempt for username: yunan
+[2025-12-13 04:22:00] Database connected successfully
+[2025-12-13 04:22:00] Checking admin table...
+[2025-12-13 04:22:00] Checking users table...
+[2025-12-13 04:22:00] Query executed. Rows found: 1
+[2025-12-13 04:22:00] User found: yunan
+[2025-12-13 04:22:00] Password verification: SUCCESS
+[2025-12-13 04:22:00] Session created for user: yunan
+[2025-12-13 04:23:23] Login attempt for username: admin
+[2025-12-13 04:23:23] Database connected successfully
+[2025-12-13 04:23:23] Checking admin table...
+[2025-12-13 04:23:23] Admin found: admin
+[2025-12-13 04:23:23] Admin session created for: admin
+[2025-12-13 04:23:54] Login attempt for username: yunan
+[2025-12-13 04:23:54] Database connected successfully
+[2025-12-13 04:23:54] Checking admin table...
+[2025-12-13 04:23:54] Checking users table...
+[2025-12-13 04:23:54] Query executed. Rows found: 1
+[2025-12-13 04:23:54] User found: yunan
+[2025-12-13 04:23:54] Password verification: SUCCESS
+[2025-12-13 04:23:54] Session created for user: yunan
+[2025-12-13 04:26:06] Login attempt for username: admin
+[2025-12-13 04:26:06] Database connected successfully
+[2025-12-13 04:26:06] Checking admin table...
+[2025-12-13 04:26:06] Admin found: admin
+[2025-12-13 04:26:06] Admin session created for: admin
+[2025-12-13 04:30:12] Login attempt for username: yunan
+[2025-12-13 04:30:12] Database connected successfully
+[2025-12-13 04:30:12] Checking admin table...
+[2025-12-13 04:30:12] Checking users table...
+[2025-12-13 04:30:12] Query executed. Rows found: 1
+[2025-12-13 04:30:12] User found: yunan
+[2025-12-13 04:30:13] Password verification: SUCCESS
+[2025-12-13 04:30:13] Session created for user: yunan
+[2025-12-13 04:34:16] Login attempt for username: yunan
+[2025-12-13 04:34:16] Database connected successfully
+[2025-12-13 04:34:16] Checking admin table...
+[2025-12-13 04:34:16] Checking users table...
+[2025-12-13 04:34:16] Query executed. Rows found: 1
+[2025-12-13 04:34:16] User found: yunan
+[2025-12-13 04:34:16] Password verification: SUCCESS
+[2025-12-13 04:34:16] Session created for user: yunan
+[2025-12-13 04:35:40] Login attempt for username: yunan
+[2025-12-13 04:35:40] Database connected successfully
+[2025-12-13 04:35:40] Checking admin table...
+[2025-12-13 04:35:40] Checking users table...
+[2025-12-13 04:35:40] Query executed. Rows found: 1
+[2025-12-13 04:35:40] User found: yunan
+[2025-12-13 04:35:40] Password verification: SUCCESS
+[2025-12-13 04:35:40] Session created for user: yunan
+[2025-12-13 04:36:02] Login attempt for username: yunan
+[2025-12-13 04:36:02] Database connected successfully
+[2025-12-13 04:36:02] Checking admin table...
+[2025-12-13 04:36:02] Checking users table...
+[2025-12-13 04:36:02] Query executed. Rows found: 1
+[2025-12-13 04:36:02] User found: yunan
+[2025-12-13 04:36:02] Password verification: SUCCESS
+[2025-12-13 04:36:02] Session created for user: yunan
+[2025-12-13 04:37:15] Login attempt for username: yunan
+[2025-12-13 04:37:15] Database connected successfully
+[2025-12-13 04:37:15] Checking admin table...
+[2025-12-13 04:37:15] Checking users table...
+[2025-12-13 04:37:15] Query executed. Rows found: 1
+[2025-12-13 04:37:15] User found: yunan
+[2025-12-13 04:37:15] Password verification: SUCCESS
+[2025-12-13 04:37:15] Session created for user: yunan
+[2025-12-13 04:39:45] Login attempt for username: admin
+[2025-12-13 04:39:45] Database connected successfully
+[2025-12-13 04:39:45] Checking admin table...
+[2025-12-13 04:39:45] Admin found: admin
+[2025-12-13 04:39:45] Admin session created for: admin
+[2025-12-13 04:40:20] Login attempt for username: admin
+[2025-12-13 04:40:20] Database connected successfully
+[2025-12-13 04:40:20] Checking admin table...
+[2025-12-13 04:40:20] Admin found: admin
+[2025-12-13 04:40:20] Admin session created for: admin
+[2025-12-13 04:40:45] Login attempt for username: admin
+[2025-12-13 04:40:45] Database connected successfully
+[2025-12-13 04:40:45] Checking admin table...
+[2025-12-13 04:40:45] Admin found: admin
+[2025-12-13 04:40:46] Admin session created for: admin
+[2025-12-13 04:43:34] Register attempt for username: tsaqif
+[2025-12-13 04:43:34] Database connected successfully
+[2025-12-13 04:43:34] Password hashed successfully
+[2025-12-13 04:43:34] User registered successfully: tsaqif (ID: 6)
+[2025-12-13 04:43:34] Session created for new user: tsaqif
+[2025-12-13 04:48:58] Login attempt for username: yunan
+[2025-12-13 04:48:58] Database connected successfully
+[2025-12-13 04:48:58] Checking admin table...
+[2025-12-13 04:48:58] Checking users table...
+[2025-12-13 04:48:58] Query executed. Rows found: 1
+[2025-12-13 04:48:58] User found: yunan
+[2025-12-13 04:48:59] Password verification: SUCCESS
+[2025-12-13 04:48:59] Session created for user: yunan
+[2025-12-13 05:26:13] Login attempt for username: yunan
+[2025-12-13 05:26:13] Database connected successfully
+[2025-12-13 05:26:13] Checking admin table...
+[2025-12-13 05:26:13] Checking users table...
+[2025-12-13 05:26:13] Query executed. Rows found: 1
+[2025-12-13 05:26:13] User found: yunan
+[2025-12-13 05:26:13] Password verification: SUCCESS
+[2025-12-13 05:26:13] Session created for user: yunan
+[2025-12-13 05:43:15] Login attempt for username: admin
+[2025-12-13 05:43:15] Database connected successfully
+[2025-12-13 05:43:15] Checking admin table...
+[2025-12-13 05:43:15] Admin found: admin
+[2025-12-13 05:43:15] Admin session created for: admin
+[2025-12-13 05:44:33] Login attempt for username: tsaqif
+[2025-12-13 05:44:33] Database connected successfully
+[2025-12-13 05:44:33] Checking admin table...
+[2025-12-13 05:44:33] Checking users table...
+[2025-12-13 05:44:33] Query executed. Rows found: 1
+[2025-12-13 05:44:33] User found: tsaqif
+[2025-12-13 05:44:33] Password verification: SUCCESS
+[2025-12-13 05:44:33] Session created for user: tsaqif
+[2025-12-13 05:44:50] Login attempt for username: admin
+[2025-12-13 05:44:50] Database connected successfully
+[2025-12-13 05:44:50] Checking admin table...
+[2025-12-13 05:44:50] Admin found: admin
+[2025-12-13 05:44:50] Admin session created for: admin
+[2025-12-13 05:45:24] Login attempt for username: admin
+[2025-12-13 05:45:24] Database connected successfully
+[2025-12-13 05:45:24] Checking admin table...
+[2025-12-13 05:45:24] Admin found: admin
+[2025-12-13 05:45:25] Admin session created for: admin
+[2025-12-13 05:56:47] Login attempt for username: yunan
+[2025-12-13 05:56:47] Database connected successfully
+[2025-12-13 05:56:47] Checking admin table...
+[2025-12-13 05:56:47] Checking users table...
+[2025-12-13 05:56:47] Query executed. Rows found: 1
+[2025-12-13 05:56:47] User found: yunan
+[2025-12-13 05:56:47] Password verification: SUCCESS
+[2025-12-13 05:56:47] Session created for user: yunan
+[2025-12-13 05:58:18] Login attempt for username: admin
+[2025-12-13 05:58:18] Database connected successfully
+[2025-12-13 05:58:18] Checking admin table...
+[2025-12-13 05:58:18] Admin found: admin
+[2025-12-13 05:58:18] Admin session created for: admin
+[2025-12-13 05:58:32] Login attempt for username: admin
+[2025-12-13 05:58:32] Database connected successfully
+[2025-12-13 05:58:32] Checking admin table...
+[2025-12-13 05:58:32] Admin found: admin
+[2025-12-13 05:58:32] Admin session created for: admin
+[2025-12-13 05:58:43] Login attempt for username: admin
+[2025-12-13 05:58:43] Database connected successfully
+[2025-12-13 05:58:43] Checking admin table...
+[2025-12-13 05:58:43] Admin found: admin
+[2025-12-13 05:58:43] Admin session created for: admin
+[2025-12-13 05:59:09] Login attempt for username: admin
+[2025-12-13 05:59:09] Database connected successfully
+[2025-12-13 05:59:09] Checking admin table...
+[2025-12-13 05:59:09] Admin found: admin
+[2025-12-13 05:59:09] Admin session created for: admin
+[2025-12-13 06:05:43] Login attempt for username: admin
+[2025-12-13 06:05:43] Database connected successfully
+[2025-12-13 06:05:43] Checking admin table...
+[2025-12-13 06:05:43] Admin found: admin
+[2025-12-13 06:05:43] Admin session created for: admin
+[2025-12-13 06:07:53] Login attempt for username: admin
+[2025-12-13 06:07:53] Database connected successfully
+[2025-12-13 06:07:53] Checking admin table...
+[2025-12-13 06:07:53] Admin found: admin
+[2025-12-13 06:07:53] Admin session created for: admin
+[2025-12-13 06:21:47] Login attempt for username: admin
+[2025-12-13 06:21:47] Database connected successfully
+[2025-12-13 06:21:47] Checking admin table...
+[2025-12-13 06:21:47] Admin found: admin
+[2025-12-13 06:21:47] Admin session created for: admin

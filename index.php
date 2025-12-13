@@ -21,6 +21,12 @@ if (!$conn->connect_error) {
 
 // Check if user is logged in
 $isLoggedIn = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+
+if (!$isLoggedIn) {
+    header("Location: php/login.php");
+    exit();
+}
+
 $username = $isLoggedIn ? $_SESSION['username'] : '';
 ?>
 <!DOCTYPE html>
@@ -370,8 +376,8 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                 <div class="profile-dropdown">
                     <button class="profile-btn" onclick="toggleDropdown()">★ <?php echo htmlspecialchars($username); ?> ★</button>
                     <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="#" onclick="openModal('profileModal'); return false;">VIEW PROFILE</a>
-                        <a href="#" onclick="openModal('editModal'); return false;">EDIT PROFILE</a>
+                        <a href="#" onclick="openModal('profileModal'); loadProfileData(); return false;">VIEW PROFILE</a>
+                        <a href="#" onclick="openModal('editModal'); loadEditData(); return false;">EDIT PROFILE</a>
                         <a href="#" onclick="openModal('passwordModal'); return false;">CHANGE PASSWORD</a>
                         <a href="#" onclick="openModal('statusModal'); return false;">ADD STATUS</a>
                         <a href="#" onclick="logout(); return false;" style="color: #ff0000;">LOGOUT</a>
@@ -885,10 +891,7 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                                     <span class="profile-info-label">JOINED</span>
                                     <span class="profile-info-value">${new Date(profile.created_at).toLocaleDateString('id-ID')}</span>
                                 </div>
-                                <div class="profile-info-row">
-                                    <span class="profile-info-label">LAST LOGIN</span>
-                                    <span class="profile-info-value">${profile.last_login ? new Date(profile.last_login).toLocaleString('id-ID') : '(Never)'}</span>
-                                </div>
+
                             </div>
                         `;
                         document.getElementById('profileContent').innerHTML = content;
