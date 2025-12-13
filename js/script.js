@@ -435,6 +435,13 @@ const characterData = {
         description: 'A mysterious character added to the game.',
         quote: '"Hello world!"',
         abilities: 'Coding, debugging'
+    },
+    agoyy: {
+        name: 'AGOYY',
+        icon: '😎',
+        description: 'orang ganteng ft unsoed blater purbalingga',
+        quote: '"Always stay cool"',
+        abilities: 'Charm, Technology, Leadership'
     }
 };
 
@@ -442,31 +449,66 @@ function showCharacterModal(charId) {
     const modal = document.getElementById('characterModal');
     if (!modal) return;
 
-    // Check if we have local data for this character
-    // charId is now the name (e.g., 'frisk') passed from index.php
+    // charId is the name (e.g., 'frisk') passed from index.php
     const normalizedId = String(charId).toLowerCase().trim();
-    const char = characterData[normalizedId];
+
+    // Default structure
+    let char = null;
+
+    // 1. Check dynamic DB data injected from PHP
+    if (typeof dbCharacters !== 'undefined' && dbCharacters[normalizedId]) {
+        const dbChar = dbCharacters[normalizedId];
+        char = {
+            name: dbChar.name,
+            icon: '👤', // Default icon
+            description: dbChar.description,
+            bio: dbChar.bio,
+            abilities: dbChar.role
+        };
+    }
+
+    // 2. Check hardcoded data (for icons, specific overrides)
+    if (characterData[normalizedId]) {
+        const localChar = characterData[normalizedId];
+        if (char) {
+            // Merge: prefer local icon
+            char.icon = localChar.icon;
+            // If bio is missing in DB but quote exists in local, maybe we could use quote as bio? 
+            // But user said "no quote in admin", so let's stick to admin fields aka Bio.
+            // We won't map local 'quote' to 'bio' to respect the "match admin" request.
+            if (!char.abilities) char.abilities = localChar.abilities;
+        } else {
+            // Use local data entirely if not in DB
+            char = localChar;
+            // Map local 'quote' to bio for consistent display if utilizing legacy data
+            if (!char.bio && char.quote) {
+                char.bio = char.quote;
+            }
+        }
+    }
 
     if (char) {
         const body = document.getElementById('modalBody');
+        // Build the bio section only if it exists
+        const bioHtml = char.bio ? `
+            <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0;">
+                <strong style="font-size: 0.9rem;">BIOGRAPHY:</strong><br>
+                <span style="font-size: 0.75rem; color: #aaa; font-style: italic; line-height: 1.6; display: block; margin-top: 10px;">${char.bio}</span>
+            </div>` : '';
+
         body.innerHTML = `
             <div style="text-align: center; font-size: 5rem; margin: 20px 0; min-height: 120px; display: flex; align-items: center; justify-content: center;">${char.icon}</div>
             <h2 style="text-align: center; margin-bottom: 20px; font-size: 1.5rem;">${char.name}</h2>
             <p style="font-size: 0.8rem; line-height: 2; margin-bottom: 20px; text-align: center;">${char.description}</p>
-            <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0;">
-                <strong style="font-size: 0.9rem;">QUOTE:</strong><br>
-                <span style="font-size: 0.75rem; color: #aaa; font-style: italic;">${char.quote}</span>
-            </div>
+            ${bioHtml}
             <div style="border: 3px solid #fff; padding: 15px; margin: 20px 0; background: rgba(255,255,255,0.1);">
-                <strong style="font-size: 0.9rem;">ABILITIES:</strong><br>
+                <strong style="font-size: 0.9rem;">ABILITIES/ROLE:</strong><br>
                 <span style="font-size: 0.75rem; color: #aaa;">${char.abilities}</span>
             </div>
         `;
         modal.classList.add('active');
     } else {
-        // Fallback for debugging or if ID was passed
         console.log('Character data not found for:', charId);
-
         const body = document.getElementById('modalBody');
         body.innerHTML = `<p style="text-align: center; color: #ff0000;">Character data missing for: ${charId}</p>`;
         modal.classList.add('active');

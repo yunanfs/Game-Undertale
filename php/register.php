@@ -428,9 +428,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>Already have an account?<br><a href="login.php">Login here</a></p>
             </div>
 
-            <div class="back-link">
-                <a href="../index.php">← BACK TO HOME</a>
-            </div>
+
         </div>
     </div>
 

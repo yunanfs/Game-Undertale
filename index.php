@@ -356,6 +356,13 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             padding: 0;
             margin-top: 55px;
         }
+
+        /* Force menu button width */
+        .menu-btn {
+            width: 350px !important;
+            padding: 15px 0 !important;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -816,6 +823,32 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                 'file' => $t['file_path']
             ];
         }, $music_tracks)); ?>;
+
+        <?php
+        // Fetch characters for JS
+        $js_chars = [];
+        try {
+            $c_conn = new mysqli('localhost', 'root', '', 'undertale_game');
+            if (!$c_conn->connect_error) {
+                $c_conn->set_charset("utf8mb4");
+                $c_res = $c_conn->query("SELECT name, role, description, bio FROM characters");
+                if ($c_res) {
+                    while ($r = $c_res->fetch_assoc()) {
+                        $js_chars[strtolower($r['name'])] = [
+                            'name' => strtoupper($r['name']),
+                            'role' => $r['role'],
+                            'description' => $r['description'],
+                            'bio' => $r['bio'],
+                            // Mapping icons for known ones, default for others
+                            'icon' => '👤' 
+                        ];
+                    }
+                }
+                $c_conn->close();
+            }
+        } catch (Exception $e) {}
+        ?>
+        const dbCharacters = <?php echo json_encode($js_chars); ?>;
     </script>
     <script src="js/script.js?v=<?php echo time(); ?>"></script>
     <script>
