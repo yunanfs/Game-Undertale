@@ -363,6 +363,36 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             padding: 15px 0 !important;
             text-align: center;
         }
+
+        /* Gallery Grid Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+        .gallery-item {
+            border: 4px solid #fff;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #000;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: #ffff00;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+        }
+        .gallery-img {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+        .gallery-item h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -746,15 +776,55 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         <div class="container">
             <h2>★ GALLERY ★</h2>
             <div class="gallery-grid">
-                <div class="gallery-item"><div class="gallery-img">🏛️</div><h3>THE RUINS</h3></div>
-                <div class="gallery-item"><div class="gallery-img">❄️</div><h3>SNOWDIN</h3></div>
-                <div class="gallery-item"><div class="gallery-img">💧</div><h3>WATERFALL</h3></div>
-                <div class="gallery-item"><div class="gallery-img">🔥</div><h3>HOTLAND</h3></div>
-                <div class="gallery-item"><div class="gallery-img">🏰</div><h3>NEW HOME</h3></div>
-                <div class="gallery-item"><div class="gallery-img">⚔️</div><h3>BATTLE</h3></div>
+                <?php
+                $gallery_sql = "SELECT * FROM gallery ORDER BY id ASC";
+                $gallery_result = $conn->query($gallery_sql);
+                
+                if ($gallery_result && $gallery_result->num_rows > 0) {
+                    while($item = $gallery_result->fetch_assoc()) {
+                        $g_title = htmlspecialchars($item['title']);
+                        $g_desc = htmlspecialchars($item['description']);
+                        $g_img_raw = $item['image_url'];
+                        
+                        if (mb_strlen($g_img_raw) < 10 && !strpos($g_img_raw, '/')) {
+                           $g_display = '<div class="gallery-img">'.$g_img_raw.'</div>';
+                        } else {
+                           $g_display = '<img src="'.$g_img_raw.'" alt="'.$g_title.'" class="gallery-thumb" style="width:100%; height:150px; object-fit:cover;">';
+                        }
+                        
+                        $js_title = json_encode($g_title);
+                        $js_desc = json_encode($g_desc);
+                        $js_img = json_encode($g_img_raw);
+                        
+                        echo "<div class='gallery-item' onclick='openGalleryModal($js_title, $js_desc, $js_img)'>";
+                        echo $g_display;
+                        echo "<h3>$g_title</h3>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p style='color:white;width:100%;text-align:center;'>No gallery items found.</p>";
+                }
+                ?>
             </div>
         </div>
     </section>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content" style="max-width: 600px; text-align: center;">
+            <div class="modal-header">
+                <h2 id="galleryModalTitle">TITLE</h2>
+            </div>
+            <div id="galleryModalBody">
+                <!-- Image or Icon will go here -->
+                <div id="galleryModalImage" style="font-size: 5rem; margin: 20px 0;"></div>
+                <p id="galleryModalDesc" style="line-height: 1.6; color: #ccc; margin-top: 20px; font-size: 0.8rem;"></p>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeModal('galleryModal')">CLOSE</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Music Section -->
     <section id="music">

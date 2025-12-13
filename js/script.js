@@ -619,3 +619,147 @@ function nextTrack() {
 // Initialize
 updateHP(20);
 updateStats();
+
+// ==========================================
+// RESTORED GALLERY LOGIC
+// ==========================================
+
+// Gallery Modal
+function openGalleryModal(title, desc, img) {
+    const modal = document.getElementById('galleryModal');
+    if (!modal) return;
+
+    document.getElementById('galleryModalTitle').textContent = title;
+    document.getElementById('galleryModalDesc').textContent = desc;
+
+    const imgContainer = document.getElementById('galleryModalImage');
+
+    // Check if it's an image path or emoji
+    if (img.includes('/') || img.length > 10) {
+        imgContainer.innerHTML = `<img src="${img}" style="max-width: 100%; max-height: 300px; border: 4px solid #fff;">`;
+    } else {
+        imgContainer.innerHTML = img; // Emoji
+    }
+
+    modal.classList.add('active');
+}
+
+// Gallery Carousel Logic
+let galleryIndex = 0;
+let galleryInterval;
+let itemsPerView = 3;
+let isTransitioning = false;
+
+// Infinite Loop Setup
+function setupGallery() {
+    const track = document.getElementById('galleryTrack');
+    if (!track) return;
+
+    // Clear any existing clones if re-running
+    const existingClones = track.querySelectorAll('.gallery-clone');
+    existingClones.forEach(el => el.remove());
+
+    const items = Array.from(track.children);
+    if (items.length === 0) return;
+
+    // Clone count based on max view (3)
+    const cloneCount = 3;
+
+    // Create Clones
+    const firstClones = items.slice(0, cloneCount).map(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('gallery-clone');
+        // Fix click handlers on clones by recreating the onclick if needed
+        // Since we use inline onclick HTML attributes, they are cloned automatically.
+        return clone;
+    });
+
+    const lastClones = items.slice(-cloneCount).map(item => {
+        const clone = item.cloneNode(true);
+        clone.classList.add('gallery-clone');
+        return clone;
+    });
+
+    // Prepend and Append
+    lastClones.forEach(clone => track.insertBefore(clone, track.firstChild));
+    firstClones.forEach(clone => track.appendChild(clone));
+
+    // Set Initial Position (offset by cloneCount)
+    galleryIndex = cloneCount;
+    updateGalleryPosition(false); // No transition initially
+
+    // Transition End Listener for seamless loop
+    track.addEventListener('transitionend', () => {
+        const currentItems = track.children;
+        const totalRealItems = currentItems.length - (cloneCount * 2);
+
+        isTransitioning = false;
+
+        // Correct jumps
+        if (galleryIndex >= totalRealItems + cloneCount) {
+            // Jump to start
+            galleryIndex = cloneCount;
+            updateGalleryPosition(false);
+        } else if (galleryIndex < cloneCount) {
+            // Jump to end
+            galleryIndex = totalRealItems + cloneCount - 1;
+            updateGalleryPosition(false);
+        }
+    });
+}
+
+function updateItemsPerView() {
+    if (window.innerWidth <= 768) {
+        itemsPerView = 1;
+    } else if (window.innerWidth <= 1024) {
+        itemsPerView = 2;
+    } else {
+        itemsPerView = 3;
+    }
+    // Re-adjust position simply by ensuring we are aligned
+    updateGalleryPosition(false);
+}
+window.addEventListener('resize', updateItemsPerView);
+
+function moveGallery(step) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    galleryIndex += step;
+    updateGalleryPosition(true);
+}
+
+function updateGalleryPosition(animate) {
+    const track = document.getElementById('galleryTrack');
+    if (!track) return;
+
+    if (animate) {
+        track.style.transition = 'transform 0.5s ease-in-out';
+    } else {
+        track.style.transition = 'none';
+    }
+
+    const shift = -(galleryIndex * (100 / itemsPerView));
+    track.style.transform = `translateX(${shift}%)`;
+}
+
+function startGalleryAutoSlide() {
+    if (galleryInterval) clearInterval(galleryInterval);
+    galleryInterval = setInterval(() => {
+        moveGallery(1); // Always move forward
+    }, 3000);
+}
+
+function pauseGallery() {
+    clearInterval(galleryInterval);
+}
+
+function resumeGallery() {
+    startGalleryAutoSlide();
+}
+
+// Start on load
+document.addEventListener('DOMContentLoaded', () => {
+    setupGallery(); // Setup clones first
+    updateItemsPerView();
+    startGalleryAutoSlide();
+});

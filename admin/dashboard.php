@@ -402,6 +402,17 @@ $music_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
                 </div>
             </div>
 
+            <!-- Gallery Card -->
+            <div class="dashboard-card">
+                <h2>GALLERY</h2>
+                <div class="stat-number"><?php echo mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM gallery"))['count'] ?? 0; ?></div>
+                <p style="font-size: 0.7rem; color: #aaa;">Gallery items</p>
+                <div class="card-actions">
+                    <a href="gallery.php" class="btn primary">VIEW</a>
+                    <a href="gallery_add.php" class="btn">ADD NEW</a>
+                </div>
+            </div>
+
             <!-- Music Card -->
             <div class="dashboard-card">
                 <h2>MUSIC</h2>
