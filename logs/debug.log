@@ -666,3 +666,78 @@
 [2025-12-13 06:21:47] Checking admin table...
 [2025-12-13 06:21:47] Admin found: admin
 [2025-12-13 06:21:47] Admin session created for: admin
+[2025-12-13 07:51:43] Login attempt for username: admin
+[2025-12-13 07:51:43] Database connected successfully
+[2025-12-13 07:51:43] Checking admin table...
+[2025-12-13 07:51:43] Admin found: admin
+[2025-12-13 07:51:43] Admin session created for: admin
+[2025-12-13 07:52:04] Login attempt for username: yunan
+[2025-12-13 07:52:04] Database connected successfully
+[2025-12-13 07:52:04] Checking admin table...
+[2025-12-13 07:52:04] Checking users table...
+[2025-12-13 07:52:04] Query executed. Rows found: 1
+[2025-12-13 07:52:04] User found: yunan
+[2025-12-13 07:52:04] Password verification: SUCCESS
+[2025-12-13 07:52:04] Session created for user: yunan
+[2025-12-13 07:53:58] Login attempt for username: yunan
+[2025-12-13 07:53:58] Database connected successfully
+[2025-12-13 07:53:58] Checking admin table...
+[2025-12-13 07:53:58] Checking users table...
+[2025-12-13 07:53:58] Query executed. Rows found: 1
+[2025-12-13 07:53:58] User found: yunan
+[2025-12-13 07:53:59] Password verification: SUCCESS
+[2025-12-13 07:53:59] Session created for user: yunan
+[2025-12-13 08:21:31] Login attempt for username: admin
+[2025-12-13 08:21:31] Database connected successfully
+[2025-12-13 08:21:31] Checking admin table...
+[2025-12-13 08:21:31] Admin found: admin
+[2025-12-13 08:21:31] Admin session created for: admin
+[2025-12-13 08:35:35] Login attempt for username: yunan
+[2025-12-13 08:35:35] Database connected successfully
+[2025-12-13 08:35:35] Checking admin table...
+[2025-12-13 08:35:35] Checking users table...
+[2025-12-13 08:35:35] Query executed. Rows found: 1
+[2025-12-13 08:35:35] User found: yunan
+[2025-12-13 08:35:35] Password verification: SUCCESS
+[2025-12-13 08:35:35] Session created for user: yunan
+[2025-12-13 09:00:20] Login attempt for username: admin
+[2025-12-13 09:00:20] Database connected successfully
+[2025-12-13 09:00:20] Checking admin table...
+[2025-12-13 09:00:20] Admin found: admin
+[2025-12-13 09:00:20] Admin session created for: admin
+[2025-12-13 09:03:41] Login attempt for username: yunan
+[2025-12-13 09:03:41] Database connected successfully
+[2025-12-13 09:03:41] Checking admin table...
+[2025-12-13 09:03:41] Checking users table...
+[2025-12-13 09:03:41] Query executed. Rows found: 1
+[2025-12-13 09:03:41] User found: yunan
+[2025-12-13 09:03:41] Password verification: SUCCESS
+[2025-12-13 09:03:41] Session created for user: yunan
+[2025-12-13 11:23:55] Login attempt for username: yunan
+[2025-12-13 11:23:55] Database connected successfully
+[2025-12-13 11:23:55] Checking admin table...
+[2025-12-13 11:23:55] Checking users table...
+[2025-12-13 11:23:55] Query executed. Rows found: 1
+[2025-12-13 11:23:55] User found: yunan
+[2025-12-13 11:23:55] Password verification: SUCCESS
+[2025-12-13 11:23:55] Session created for user: yunan
+[2025-12-13 11:27:29] Login attempt for username: admin
+[2025-12-13 11:27:29] Database connected successfully
+[2025-12-13 11:27:29] Checking admin table...
+[2025-12-13 11:27:29] Admin found: admin
+[2025-12-13 11:27:29] Admin session created for: admin
+[2025-12-13 11:31:05] Register attempt for username: dimas
+[2025-12-13 11:31:05] Validation errors: Password must be at least 6 characters
+[2025-12-13 11:32:26] Login attempt for username: yunan
+[2025-12-13 11:32:26] Database connected successfully
+[2025-12-13 11:32:26] Checking admin table...
+[2025-12-13 11:32:26] Checking users table...
+[2025-12-13 11:32:26] Query executed. Rows found: 1
+[2025-12-13 11:32:26] User found: yunan
+[2025-12-13 11:32:26] Password verification: SUCCESS
+[2025-12-13 11:32:26] Session created for user: yunan
+[2025-12-13 11:36:08] Login attempt for username: admin
+[2025-12-13 11:36:08] Database connected successfully
+[2025-12-13 11:36:08] Checking admin table...
+[2025-12-13 11:36:08] Admin found: admin
+[2025-12-13 11:36:08] Admin session created for: admin
