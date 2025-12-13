@@ -911,3 +911,11 @@
 [2025-12-13 19:21:44] Checking admin table...
 [2025-12-13 19:21:44] Admin found: admin
 [2025-12-13 19:21:44] Admin session created for: admin
+[2025-12-13 19:24:15] Login attempt for username: yunan
+[2025-12-13 19:24:15] Database connected successfully
+[2025-12-13 19:24:15] Checking admin table...
+[2025-12-13 19:24:15] Checking users table...
+[2025-12-13 19:24:15] Query executed. Rows found: 1
+[2025-12-13 19:24:15] User found: yunan
+[2025-12-13 19:24:15] Password verification: SUCCESS
+[2025-12-13 19:24:15] Session created for user: yunan

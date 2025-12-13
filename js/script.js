@@ -109,6 +109,20 @@ function updateStats() {
     document.getElementById('turnCount').textContent = turnCount;
     document.getElementById('totalDamage').textContent = totalDamage;
     document.getElementById('score').textContent = score;
+
+    // RPG Stats (calculated based on score for demo)
+    const currentGold = Math.floor(score * 0.5);
+    const currentExp = Math.floor(score * 0.2);
+
+    // Set just the numbers (labels are now in HTML)
+    document.getElementById('goldDisplay').textContent = "GOLD " + currentGold;
+    document.getElementById('expDisplay').textContent = "EXP " + currentExp;
+
+    // Also update victory screen placeholders if they exist
+    const winGold = document.getElementById('winGold');
+    const winExp = document.getElementById('winExp');
+    if (winGold) winGold.textContent = currentGold;
+    if (winExp) winExp.textContent = currentExp;
 }
 
 // Dodge Phase
@@ -124,123 +138,78 @@ function startDodgePhase() {
     }, 4000);
 }
 
+// New Advanced Attack Logic
 function createBulletPattern() {
     const arena = document.querySelector('.battle-arena');
-    const patterns = [
-        createHorizontalWave,
-        createVerticalRain,
-        createCirclePattern,
-        createRandomPattern
-    ];
-
-    const pattern = patterns[Math.floor(Math.random() * patterns.length)];
-    pattern(arena);
+    createSpitAttack(arena);
 }
 
-function createHorizontalWave(arena) {
-    for (let i = 0; i < 8; i++) {
+function createSpitAttack(arena) {
+    const enemy = document.getElementById('enemySprite');
+    const enemyRect = enemy.getBoundingClientRect();
+    const arenaRect = arena.getBoundingClientRect();
+
+    // Calculate spawn point relative to arena (Mouth position approx center of sprite)
+    const startX = (enemyRect.left - arenaRect.left) + (enemyRect.width / 2);
+    const startY = (enemyRect.top - arenaRect.top) + (enemyRect.height / 2) + 20; // +20 to be near "mouth"
+
+    // Number of bullets per wave
+    const bulletCount = 20;
+
+    for (let i = 0; i < bulletCount; i++) {
         setTimeout(() => {
             const bullet = document.createElement('div');
             bullet.className = 'bullet';
-            bullet.style.width = '15px';
-            bullet.style.height = '15px';
-            bullet.style.left = '0px';
-            bullet.style.top = (50 + i * 30) + 'px';
+            // Random size for variety
+            const size = Math.random() < 0.3 ? 12 : 8;
+            bullet.style.width = size + 'px';
+            bullet.style.height = size + 'px';
+            bullet.style.borderRadius = '50%'; // Make them round/pellet like
+            bullet.style.left = startX + 'px';
+            bullet.style.top = startY + 'px';
+
+            // Random direction 360 degrees
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 3 + Math.random() * 4; // Variable speed
+
+            bullet.dataset.vx = Math.cos(angle) * speed;
+            bullet.dataset.vy = Math.sin(angle) * speed; // Can be negative (upwards)
+
             arena.appendChild(bullet);
-            animateBulletHorizontal(bullet);
-        }, i * 300);
+            animateBulletVector(bullet);
+        }, i * 300); // Staggered release
     }
 }
 
-function createVerticalRain(arena) {
-    for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-            const bullet = document.createElement('div');
-            bullet.className = 'bullet';
-            bullet.style.width = '12px';
-            bullet.style.height = '12px';
-            bullet.style.left = (Math.random() * 90 + 5) + '%';
-            bullet.style.top = '0px';
-            arena.appendChild(bullet);
-            animateBulletVertical(bullet);
-        }, i * 400);
-    }
-}
+function animateBulletVector(bullet) {
+    const arena = document.querySelector('.battle-arena');
+    const arenaRect = arena.getBoundingClientRect();
 
-function createCirclePattern(arena) {
-    const centerX = arena.offsetWidth / 2;
-    const centerY = arena.offsetHeight / 2;
-    const radius = 100;
-
-    for (let i = 0; i < 12; i++) {
-        setTimeout(() => {
-            const angle = (i / 12) * Math.PI * 2;
-            const bullet = document.createElement('div');
-            bullet.className = 'bullet';
-            bullet.style.width = '15px';
-            bullet.style.height = '15px';
-            bullet.style.left = centerX + 'px';
-            bullet.style.top = centerY + 'px';
-            arena.appendChild(bullet);
-            animateBulletRadial(bullet, angle);
-        }, i * 200);
-    }
-}
-
-function createRandomPattern(arena) {
-    for (let i = 0; i < 15; i++) {
-        setTimeout(() => {
-            const bullet = document.createElement('div');
-            bullet.className = 'bullet';
-            bullet.style.width = '10px';
-            bullet.style.height = '10px';
-            bullet.style.left = (Math.random() * 90 + 5) + '%';
-            bullet.style.top = (Math.random() * 80 + 10) + '%';
-            arena.appendChild(bullet);
-        }, i * 200);
-    }
-}
-
-function animateBulletHorizontal(bullet) {
-    let pos = 0;
+    // Use requestAnimationFrame for smoother movement if possible, but keeping setInterval for compatibility with existing structure
     const interval = setInterval(() => {
-        if (pos >= 800) {
-            bullet.remove();
+        if (!document.body.contains(bullet)) {
             clearInterval(interval);
-        } else {
-            pos += 4;
-            bullet.style.left = pos + 'px';
-            checkCollision(bullet);
+            return;
         }
-    }, 20);
-}
 
-function animateBulletVertical(bullet) {
-    let pos = 0;
-    const interval = setInterval(() => {
-        if (pos >= 400) {
+        let left = parseFloat(bullet.style.left);
+        let top = parseFloat(bullet.style.top);
+
+        // Retrieve vector
+        const vx = parseFloat(bullet.dataset.vx);
+        const vy = parseFloat(bullet.dataset.vy);
+
+        // Apply movement
+        left += vx;
+        top += vy;
+
+        // Boundary check
+        if (top > arena.offsetHeight || top < -20 || left < -20 || left > arena.offsetWidth) {
             bullet.remove();
             clearInterval(interval);
         } else {
-            pos += 3;
-            bullet.style.top = pos + 'px';
-            checkCollision(bullet);
-        }
-    }, 20);
-}
-
-function animateBulletRadial(bullet, angle) {
-    let distance = 0;
-    const interval = setInterval(() => {
-        if (distance >= 200) {
-            bullet.remove();
-            clearInterval(interval);
-        } else {
-            distance += 3;
-            const x = parseFloat(bullet.style.left) + Math.cos(angle) * 3;
-            const y = parseFloat(bullet.style.top) + Math.sin(angle) * 3;
-            bullet.style.left = x + 'px';
-            bullet.style.top = y + 'px';
+            bullet.style.left = left + 'px';
+            bullet.style.top = top + 'px';
             checkCollision(bullet);
         }
     }, 20);
@@ -328,7 +297,25 @@ function victory() {
     document.getElementById('finalTurns').textContent = turnCount;
     document.getElementById('finalDamage').textContent = totalDamage;
     document.getElementById('finalScore').textContent = score;
-    document.getElementById('victory').classList.add('active');
+
+    // RPG Stats (calculated based on score for demo)
+    const currentGold = Math.floor(score * 0.5);
+    const currentExp = Math.floor(score * 0.2);
+
+    const winGold = document.getElementById('winGold');
+    const winExp = document.getElementById('winExp');
+    if (winGold) winGold.textContent = currentGold;
+    if (winExp) winExp.textContent = currentExp;
+
+    // Update the list view stats
+    const winGoldStat = document.getElementById('winGoldStat');
+    const winExpStat = document.getElementById('winExpStat');
+    if (winGoldStat) winGoldStat.textContent = currentGold;
+    if (winExpStat) winExpStat.textContent = currentExp;
+
+    const vScreen = document.getElementById('victory');
+    if (vScreen) vScreen.style.display = 'block'; // Override inline display:none
+
     sendBattleResult('win');
 }
 
@@ -375,7 +362,11 @@ function resetBattle() {
     document.getElementById('battleText').innerHTML =
         '* A wild FROGGIT appeared!<br>* It doesn\'t seem to know why it\'s here.';
     document.getElementById('gameOver').classList.remove('active');
-    document.getElementById('victory').classList.remove('active');
+    const vScreen = document.getElementById('victory');
+    if (vScreen) {
+        vScreen.style.display = 'none';
+        vScreen.classList.remove('active');
+    }
 }
 
 // Character Modal

@@ -538,17 +538,21 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
         <div class="container">
             <h2>★ BATTLE SYSTEM ★</h2>
             <div class="battle-container">
-                <div class="battle-header">
-                    <div class="player-info">
-                        <div class="player-name" id="playerName"><?php echo strtoupper($username ?: 'FRISK'); ?></div>
-                        <div class="player-lv">LV 1</div>
-                    </div>
-                    <div class="hp-section">
-                        <div class="hp-label">HP</div>
-                        <div class="hp-text" id="hpText">20 / 20</div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar" id="playerHp"></div>
+                <div class="battle-header" style="display: flex; justify-content: space-between; align-items: center; border: 4px solid #fff; padding: 15px; margin-bottom: 20px; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; background: #000;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span id="playerName"><?php echo strtoupper($username ?: 'FRISK'); ?></span>
+                        <span>LV 1</span>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
+                            <span style="color: #ff0000; font-size: 0.7rem;">HP</span>
+                            <div style="width: 100px; height: 20px; background: #000000ff; border: 2px solid #fff; position: relative;">
+                                <div id="playerHp" style="width: 100%; height: 100%; background: #ff0000ff; transition: width 0.3s;"></div>
+                            </div>
+                            <span id="hpText">20 / 20</span>
                         </div>
+                    </div>
+                    <div style="display: flex; gap: 20px;">
+                        <span id="goldDisplay">GOLD 0</span>
+                        <span id="expDisplay">EXP 0</span>
                     </div>
                 </div>
 
@@ -598,19 +602,35 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
                 </div>
             </div>
 
-            <div class="victory-screen" id="victory">
-                <h2>★ VICTORY! ★</h2>
-                <p class="victory-text">
-                    * You won the battle!<br>
-                    * You earned 0 EXP and 0 gold.<br>
-                    * Your LOVE increased!
-                </p>
-                <div class="victory-stats">
-                    <div>Turns Used: <span id="finalTurns">0</span></div>
-                    <div>Total Damage: <span id="finalDamage">0</span></div>
-                    <div>Final Score: <span id="finalScore">0</span></div>
+            <div class="victory-screen" id="victory" style="display: none; width: 100%; max-width: 800px; margin: 0 auto; box-sizing: border-box;">
+                <div style="height: 400px; border: 6px solid #fff; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; background: #000;">
+                    <h2 style="margin: 0 0 15px 0; font-size: 2rem;">★ VICTORY! ★</h2>
+                    <p class="victory-text" style="line-height: 1.5; margin: 0 0 15px 0;">
+                        * You won the battle!<br>
+                        * You earned <span id="winExp">0</span> EXP and <span id="winGold">0</span> gold.<br>
+                        * Your LOVE increased!
+                    </p>
+                    
+                    <div class="victory-stats-box" style="border: 4px solid #fff; padding: 15px; width: 100%; box-sizing: border-box; text-align: left; font-size: 0.8rem; margin-top: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Turns Used:</span> <span id="finalTurns">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Total Damage:</span> <span id="finalDamage">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Final Score:</span> <span id="finalScore">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>EXP Gained:</span> <span id="winExpStat">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>GOLD Gained:</span> <span id="winGoldStat">0</span>
+                        </div>
+                    </div>
+                    
+                    <button class="menu-btn" onclick="resetBattle()" style="margin-top: 20px; width: auto; padding: 10px 30px; border: 4px solid #fff;">CONTINUE</button>
                 </div>
-                <button class="menu-btn" onclick="resetBattle()">CONTINUE</button>
             </div>
         </div>
     </section>
