@@ -390,6 +390,93 @@ $username = $isLoggedIn ? $_SESSION['username'] : '';
             font-size: 1.2rem;
             text-transform: uppercase;
         }
+    /* Responsive Navigation for Mobile & Tablet */
+    @media (max-width: 900px) {
+        body {
+             margin-top: 0 !important;
+             padding-top: 0; /* Removed padding since navbar is relative */
+        }
+
+        .top-navbar {
+            flex-direction: column;
+            height: auto;
+            position: relative; /* Changed from fixed to relative to prevent overlap */
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .navbar-logo {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .navbar-center {
+            margin-left: 0;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+            display: flex; /* Ensure flex is active */
+        }
+
+        .navbar-center a {
+            display: block;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 12px;
+            font-size: 0.8rem;
+        }
+
+        .navbar-right {
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .profile-dropdown, .profile-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .dropdown-menu {
+            width: 100%;
+            position: static;
+            border-top: none;
+            border: 2px solid #fff;
+        }
+        
+        /* Adjust Modals for Mobile */
+        .modal-content {
+            width: 95%;
+            padding: 20px;
+            margin: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        /* Adjust Menu Buttons override */
+        .menu-btn {
+            width: 100% !important;
+            max-width: 300px !important;
+        }
+        
+        /* Profile Info Mobile */
+        .profile-info {
+            padding: 10px;
+        }
+        
+        .profile-info-row {
+            flex-direction: column;
+            text-align: center;
+            gap: 5px;
+        }
+        
+        .profile-info-value {
+            text-align: center;
+            margin-left: 0;
+        }
+    }
     </style>
 </head>
 <body>

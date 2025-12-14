@@ -70,8 +70,15 @@ body {
 }
 
 @keyframes heartbeat {
-    0%, 100% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(0deg) scale(1.1); }
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(1.1);
+    }
 }
 
 .title {
@@ -79,7 +86,7 @@ body {
     letter-spacing: 10px;
     margin-bottom: 30px;
     color: #fff;
-    text-shadow: 
+    text-shadow:
         -4px -4px 0 #fff,
         4px -4px 0 #fff,
         -4px 4px 0 #fff,
@@ -249,8 +256,15 @@ h2 {
 }
 
 @keyframes enemyFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .player-soul {
@@ -288,8 +302,13 @@ h2 {
 }
 
 @keyframes textAppear {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .battle-buttons {
@@ -356,8 +375,15 @@ h2 {
 }
 
 @keyframes victoryAppear {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .victory-text {
@@ -783,55 +809,151 @@ h2 {
 }
 
 @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+        /* Reduced header space for mobile */
+    }
+
+    .container {
+        padding: 10px;
+    }
+
     .title {
-        font-size: 2.5rem;
-        letter-spacing: 5px;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        text-shadow:
+            -2px -2px 0 #fff,
+            2px -2px 0 #fff,
+            -2px 2px 0 #fff,
+            2px 2px 0 #fff;
     }
 
     .subtitle {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        margin-bottom: 20px;
+    }
+
+    .dotted-border {
+        padding: 30px 15px;
     }
 
     .menu-btn {
-        min-width: 250px;
+        width: 100%;
+        max-width: 300px;
         font-size: 0.8rem;
-        padding: 12px 30px;
+        padding: 12px 0;
     }
 
-    .bottom-nav {
-        gap: 10px;
-        padding: 15px;
-    }
-
-    .bottom-nav a {
-        font-size: 0.6rem;
-        padding: 8px 12px;
-    }
-
-    .battle-buttons {
-        grid-template-columns: repeat(2, 1fr);
+    /* Battle System Mobile */
+    .battle-container {
+        width: 100%;
+        border-width: 4px;
+        padding: 10px;
     }
 
     .battle-header {
         flex-direction: column;
         gap: 15px;
+        padding: 10px;
+    }
+
+    .player-info {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .hp-section {
+        flex-direction: column;
+        gap: 5px;
     }
 
     .hp-bar-container {
-        width: 150px;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .battle-arena {
+        height: 300px;
+        /* Smaller arena on mobile */
+        border-width: 4px;
+    }
+
+    .enemy-icon {
+        font-size: 3rem;
+    }
+
+    .enemy-name {
+        font-size: 0.8rem;
+    }
+
+    .battle-text-box {
+        min-height: 100px;
+        padding: 15px;
+        font-size: 0.7rem;
+    }
+
+    .battle-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for buttons */
+        gap: 10px;
+    }
+
+    .battle-btn {
+        padding: 15px 5px;
+        font-size: 0.65rem;
+    }
+
+    /* Stats/Victory Mobile */
+    .battle-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .victory-screen {
+        padding: 20px;
+    }
+
+    /* General Sections */
+    section {
+        padding: 40px 15px;
     }
 
     h2 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+}
+
+/* Tablet Responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 90%;
     }
 
-    .characters-grid {
-        grid-template-columns: 1fr;
+    .title {
+        font-size: 3rem;
+    }
+
+    .battle-container {
+        width: 95%;
+    }
+
+    .menu-btn {
+        width: 300px;
     }
 }
