@@ -81,7 +81,7 @@ gameundertale/
 │  Already have account?              │
 │  [Login here] link                  │
 │                                     │
-│  [← BACK TO HOME] button            │
+|     │                               |
 └─────────────────────────────────────┘
 ```
 

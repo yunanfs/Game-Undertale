@@ -386,7 +386,9 @@ if ($result) {
                                 if (mb_strlen($img) < 10 && !strpos($img, '/')) {
                                     echo '<div class="thumb-emoji">'.$img.'</div>';
                                 } else {
-                                    echo '<img src="'.$img.'" class="thumb-preview" alt="Thumb">';
+                                    // If it's an absolute URL (http/https), keep it. Otherwise, prepend ../ since we are in admin/
+                                    $display_src = (strpos($img, 'http') === 0) ? $img : '../' . $img;
+                                    echo '<img src="'.$display_src.'" class="thumb-preview" alt="'.htmlspecialchars($item['title']).'">';
                                 }
                                 ?>
                             </td>
