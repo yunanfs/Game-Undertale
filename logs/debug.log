@@ -1,0 +1,8 @@
+[2025-12-14 05:08:48] Login attempt for username: yunan
+[2025-12-14 05:08:48] Database connected successfully
+[2025-12-14 05:08:48] Checking admin table...
+[2025-12-14 05:08:48] Checking users table...
+[2025-12-14 05:08:48] Query executed. Rows found: 1
+[2025-12-14 05:08:48] User found: yunan
+[2025-12-14 05:08:48] Password verification: SUCCESS
+[2025-12-14 05:08:48] Session created for user: yunan
