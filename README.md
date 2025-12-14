@@ -115,7 +115,7 @@ Dashboard menampilkan:
 - Periksa credentials di config.php
 - Periksa permission database user
 
-==================================================================================
+=========================================================================
 # UNDERTALE Game - Dokumentasi Fungsi-Fungsi
 
 ## 📋 Ringkasan
