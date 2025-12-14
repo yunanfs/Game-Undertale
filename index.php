@@ -2,11 +2,8 @@
 session_start();
 
 // Database connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'undertale_game';
-$conn = new mysqli($host, $user, $pass, $db);
+require_once 'php/config.php';
+global $conn; // Use connection from config.php
 
 // Fetch Music
 $music_tracks = [];

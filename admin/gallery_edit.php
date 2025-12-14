@@ -6,11 +6,8 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'undertale_game';
-$conn = new mysqli($host, $user, $pass, $db);
+require_once '../php/config.php';
+global $conn;
 
 $id = $_GET['id'] ?? 0;
 $item = null;

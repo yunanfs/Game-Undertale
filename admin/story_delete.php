@@ -6,13 +6,9 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
-// Direct database connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'undertale_game';
-
-$conn = new mysqli($host, $user, $pass, $db);
+// Database Connection
+require_once '../php/config.php';
+global $conn;
 
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);

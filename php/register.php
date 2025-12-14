@@ -18,10 +18,8 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 }
 
 // Database configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'undertale_game');
+require_once 'config.php';
+global $conn;
 
 // Log function for debugging
 function logDebug($message) {
@@ -80,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     try {
-        // Create database connection
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        // Use global connection
+        global $conn;
         
         if ($conn->connect_error) {
             logDebug("Connection failed: " . $conn->connect_error);

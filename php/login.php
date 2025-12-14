@@ -7,11 +7,8 @@ ini_set('error_log', __DIR__ . '/../logs/php_errors.log');
 
 session_start();
 
-// Database configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'undertale_game');
+// Include configuration
+require_once __DIR__ . '/config.php';
 
 // Log function for debugging
 function logDebug($message) {
@@ -42,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     try {
-        // Create database connection
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        // Use connection from config.php
+        global $conn; 
         
         // Check connection
-        if ($conn->connect_error) {
-            logDebug("Connection failed: " . $conn->connect_error);
-            throw new Exception("Connection failed: " . $conn->connect_error);
+        if (!$conn || $conn->connect_error) {
+            logDebug("Connection failed: " . ($conn ? $conn->connect_error : "Connection object is null"));
+            throw new Exception("Connection failed");
         }
         
         $conn->set_charset("utf8mb4");

@@ -11,12 +11,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 }
 
 // Database connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'undertale_game';
-
-$conn = new mysqli($host, $user, $pass, $db);
+// Database connection
+require_once 'php/config.php';
+global $conn;
 
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
